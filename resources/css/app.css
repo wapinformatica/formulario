@@ -1,0 +1,8 @@
+.modal {
+    backdrop-filter: blur(5px);
+}
+.modal.show {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

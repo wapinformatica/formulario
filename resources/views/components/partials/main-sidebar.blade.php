@@ -1,0 +1,1 @@
+<livewire:config.menu-side />
