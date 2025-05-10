@@ -27,28 +27,34 @@
                         {{ session('message') }}
                     </div>
                 @endif
-                
+
                 <form wire:submit.prevent="save">
                     <div class="form-group">
                         <label for="name">Nome do Formulário</label>
                         <input type="text" class="form-control" id="name" wire:model="name">
                         @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                    
+
+                    <div class="form-group">
+                        <label for="initials">Sigla</label>
+                        <input type="text" class="form-control" id="initials" wire:model="initials">
+                        @error('initials') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="description">Descrição</label>
                         <textarea class="form-control" id="description" wire:model="description" rows="2"></textarea>
                     </div>
-                    
+
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="is_active" wire:model="is_active">
                         <label class="form-check-label" for="is_active">Formulário ativo</label>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <h4>Perguntas</h4>
-                    
+
                     <div class="mb-3">
                         @foreach($questions as $index => $question)
                             <div class="card mb-3">
@@ -58,29 +64,39 @@
                                         @if($question['is_locked'] ?? false)
                                             <span class="badge badge-info">Campo Obrigatório</span>
                                         @else
-                                            <button type="button" class="btn btn-sm btn-danger" 
+                                            <button type="button" class="btn btn-sm btn-danger"
                                                     wire:click="removeQuestion({{ $index }})">
                                                 <i class="fas fa-trash"></i> Remover
                                             </button>
                                         @endif
                                     </div>
-                                    
+
                                     @if($question['is_locked'] ?? false)
                                         <input type="hidden" wire:model="questions.{{ $index }}.question">
+                                        <input type="hidden" wire:model="questions.{{ $index }}.column_id">
                                         <input type="hidden" wire:model="questions.{{ $index }}.type" value="text">
                                         <input type="hidden" wire:model="questions.{{ $index }}.is_required" value="1">
                                         <input type="hidden" wire:model="questions.{{ $index }}.is_locked" value="1">
                                     @endif
-                                    
+
                                     <div class="form-group">
                                         <label>Pergunta</label>
-                                        <input type="text" class="form-control" 
+                                        <input type="text" class="form-control"
                                                wire:model="questions.{{ $index }}.question"
                                                @if($question['is_locked'] ?? false) readonly @endif>
                                         @error('questions.'.$index.'.question') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
-                                    
+
                                     @if(!($question['is_locked'] ?? false))
+                                        <div class="form-group">
+                                            <label>Coluna Tabela</label>
+                                            <select class="form-control" wire:model="questions.{{ $index }}.column_id">
+                                                <option value="">Selecione...</option>
+                                                @foreach ($columns as $column)
+                                                    <option value="{{ $column->id }}">{{ $column->name_table }} - {{ $column->name_column }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label>Tipo de Resposta</label>
                                             <select class="form-control" wire:model="questions.{{ $index }}.type">
@@ -98,37 +114,37 @@
                                                 <option value="select">Seleção (Dropdown)</option>
                                             </select>
                                         </div>
-                                        
+
                                         <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" 
-                                                   id="required_{{ $index }}" 
+                                            <input type="checkbox" class="form-check-input"
+                                                   id="required_{{ $index }}"
                                                    wire:model="questions.{{ $index }}.is_required">
                                             <label class="form-check-label" for="required_{{ $index }}">Obrigatório</label>
                                         </div>
                                     @endif
-                                    
+
                                     @if(in_array($questions[$index]['type'], ['radio', 'checkbox', 'select']))
                                         <div class="form-group">
                                             <label>Opções</label>
                                             @foreach($question['options'] as $optIndex => $option)
                                                 <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" 
+                                                    <input type="text" class="form-control"
                                                            value="{{ $option }}" readonly>
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-outline-danger" type="button" 
+                                                        <button class="btn btn-outline-danger" type="button"
                                                                 wire:click="removeOption({{ $index }}, {{ $optIndex }})">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     </div>
                                                 </div>
                                             @endforeach
-                                            
+
                                             <div class="input-group">
-                                                <input type="text" class="form-control" 
-                                                       wire:model="questions.{{ $index }}.new_option" 
+                                                <input type="text" class="form-control"
+                                                       wire:model="questions.{{ $index }}.new_option"
                                                        placeholder="Nova opção">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-primary" type="button" 
+                                                    <button class="btn btn-outline-primary" type="button"
                                                             wire:click="addOption({{ $index }})">
                                                         <i class="fas fa-plus"></i> Adicionar
                                                     </button>
@@ -140,7 +156,7 @@
                             </div>
                         @endforeach
                     </div>
-                    
+
                     <div class="card mb-3">
                         <div class="card-header">
                             <h5>Adicionar Nova Pergunta</h5>
@@ -151,7 +167,17 @@
                                 <input type="text" class="form-control" wire:model="newQuestion.question">
                                 @error('newQuestion.question') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
-                            
+
+                            <div class="form-group">
+                                <label>Coluna Tabela</label>
+                                <select class="form-control" wire:model="newQuestion.column_id">
+                                    <option value="">Selecione...</option>
+                                    @foreach ($columns as $column)
+                                        <option value="{{ $column->id }}">{{ $column->name_table }} - {{ $column->name_column }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label>Tipo de Resposta</label>
                                 <select class="form-control" wire:model="newQuestion.type">
@@ -169,35 +195,35 @@
                                     <option value="select">Seleção (Dropdown)</option>
                                 </select>
                             </div>
-                            
+
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" 
+                                <input type="checkbox" class="form-check-input"
                                        id="new_required" wire:model="newQuestion.is_required">
                                 <label class="form-check-label" for="new_required">Obrigatório</label>
                             </div>
-                            
+
                             @if(in_array($newQuestion['type'], ['radio', 'checkbox', 'select']))
                                 <div class="form-group">
                                     <label>Opções</label>
                                     @foreach($newQuestion['options'] as $optIndex => $option)
                                         <div class="input-group mb-2">
-                                            <input type="text" class="form-control" 
+                                            <input type="text" class="form-control"
                                                    value="{{ $option }}" readonly>
                                             <div class="input-group-append">
-                                                <button class="btn btn-outline-danger" type="button" 
+                                                <button class="btn btn-outline-danger" type="button"
                                                         wire:click="removeOption('newQuestion', {{ $optIndex }})">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </div>
                                         </div>
                                     @endforeach
-                                    
+
                                     <div class="input-group">
-                                        <input type="text" class="form-control" 
-                                               wire:model="newQuestion.new_option" 
+                                        <input type="text" class="form-control"
+                                               wire:model="newQuestion.new_option"
                                                placeholder="Nova opção">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-primary" type="button" 
+                                            <button class="btn btn-outline-primary" type="button"
                                                     wire:click="addOption('newQuestion')">
                                                 <i class="fas fa-plus"></i> Adicionar
                                             </button>
@@ -205,18 +231,18 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <button type="button" class="btn btn-primary mt-2" wire:click="addQuestion">
                                 <i class="fas fa-plus-circle"></i> Adicionar Pergunta
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         @can('questionforms_incluir')
                             <button type="submit" class="btn btn-success">
                                 Salvar Formulário
-                            </button>                            
+                            </button>
                         @endcan
                         <a href="{{ route('pages.question') }}" class="btn btn-secondary">
                             Cancelar
@@ -226,7 +252,7 @@
             </div>
         </div>
     </div>
-    
+
     @push('styles')
     <style>
         .badge-info {

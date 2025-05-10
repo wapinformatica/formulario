@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MenuTableSeeder::class,
             UserTableSeeder::class,
+            ColumnTableSeeder::class,
         ]);
        // \App\Models\User::factory(54)->create();
     }

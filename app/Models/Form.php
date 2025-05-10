@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Form extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'is_active'];
+    protected $fillable = ['name', 'description', 'initials', 'is_active'];
 
     public function questions()
     {
@@ -23,7 +23,7 @@ class Form extends Model
     public static function boot()
     {
         parent::boot();
-    
+
         static::created(function($form) {
             // Ao criar um formulário, automaticamente adiciona o campo Nome Completo
             $form->questions()->create([
@@ -31,8 +31,9 @@ class Form extends Model
                 'type' => 'text',
                 'is_required' => true,
                 'is_locked' => true,
-                'order' => 0
+                'order' => 0,
+                'column_id' => Column::where('name_table', 'pessoas')->where('name_column', 'Nome')->first()->id ?? null,
             ]);
         });
-    }  
+    }
 }

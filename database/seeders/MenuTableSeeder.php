@@ -138,6 +138,48 @@ class MenuTableSeeder extends Seeder
                     'title' => 'Excluir Perfil de Acesso',
                 ]
             );
+
+            $menu = Menu::create(
+                [
+                    'menu_id_superior' => $menu_principal->id,
+                    'name' => 'Tabela Colunas',
+                    'route' => 'pages.tablecolumn',
+                    'icon' => 'far fa-circle',
+                    'status' => 1,
+                ]
+            );
+            Permission::create(
+                [
+                    'name' => 'tablecolumn_view',
+                    'menu_id' => $menu->id,
+                    'title' => 'Acessar Tabela Colunas',
+                ]
+            );
+            Permission::create(
+                [
+                    'name' => 'tablecolumn_edit',
+                    'menu_id' => $menu->id,
+                    'view' => false,
+                    'title' => 'Editar Tabela Colunas',
+                ]
+            );
+            Permission::create(
+                [
+                    'name' => 'tablecolumn_create',
+                    'menu_id' => $menu->id,
+                    'view' => false,
+                    'title' => 'Criar Tabela Colunas',
+                ]
+            );
+            Permission::create(
+                [
+                    'name' => 'tablecolumn_delete',
+                    'menu_id' => $menu->id,
+                    'view' => false,
+                    'title' => 'Excluir Tabela Colunas',
+                ]
+            );
+
             $menu = Menu::create(
                 [
                     'menu_id_superior' => $menu_principal->id,

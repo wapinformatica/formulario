@@ -16,7 +16,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                @foreach ($forms as $form )
+                                {{-- @foreach ($forms as $form )
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-header">
@@ -28,12 +28,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
+
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="card-title m-0">Cadastro de Candidatos</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">Cadastro de candidatos para futuros membros da igreja</p>
+                                            <a href="{{route('pages.candidate')}}" class="btn btn-primary">Iniciar</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </div>

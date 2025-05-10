@@ -26,5 +26,10 @@ class FormController extends Controller
             'id' => $id
         ]);
     }
-    
+
+    public function candidato()
+    {
+        return view('candidate-form',[]);
+    }
+
 }

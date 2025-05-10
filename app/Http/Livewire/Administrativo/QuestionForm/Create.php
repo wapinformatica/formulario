@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\Administrativo\QuestionForm;
 
+use App\Models\Column;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Form;
 use App\Models\FormQuestion;
-use Exception;
 
 
 class Create extends Component
@@ -18,12 +18,16 @@ class Create extends Component
     public $formId = null;
     public $name;
     public $description;
+    public $initials;
     public $is_active = true;
-    
+
+    public $columns = [];
+
     public $questions = [];
     public $newQuestion = [
         'question' => '',
         'type' => 'text',
+        'column_id' => null,
         'is_required' => false,
         'options' => [],
         'new_option' => ''
@@ -31,27 +35,31 @@ class Create extends Component
 
     protected $rules = [
         'name' => 'required|min:3',
+        'initials' => 'required|min:3',
         'description' => 'nullable|string',
         'questions.*.question' => 'required|min:3',
+        'questions.*.column_id' => 'nullable|integer',
         'questions.*.type' => 'required|in:text,textarea,date,radio,checkbox,select,email,tel,number,cpf,phone,cellphone',
         'questions.*.is_required' => 'boolean',
     ];
 
     public function render()
     {
-        return view('livewire.administrativo.question-form.create'); 
+        return view('livewire.administrativo.question-form.create');
     }
 
     public function mount($formId = null)
     {
+        $this->columns = Column::where('status', 1)->get();
         if ($formId) {
             // Modo edição - carrega formulário existente
             $form = Form::findOrFail($formId);
             $this->formId = $form->id;
             $this->name = $form->name;
             $this->description = $form->description;
+            $this->initials = $form->initials;
             $this->is_active = $form->is_active;
-            
+
             // Carrega perguntas existentes
             foreach ($form->questions()->orderBy('order')->get() as $question) {
                 $this->questions[] = $this->formatQuestion($question);
@@ -66,15 +74,17 @@ class Create extends Component
     {
         $this->validate([
             'newQuestion.question' => 'required|min:3',
+            'newQuestion.column_id' => 'nullable',
             'newQuestion.type' => 'required|in:text,textarea,date,radio,checkbox,select,email,tel,number,cpf,phone,cellphone',
         ]);
 
         $this->questions[] = [
             'question' => $this->newQuestion['question'],
+            'column_id' => $this->newQuestion['column_id'],
             'type' => $this->newQuestion['type'],
             'is_required' => $this->newQuestion['is_required'],
-            'options' => $this->newQuestion['type'] === 'radio' || $this->newQuestion['type'] === 'checkbox' || $this->newQuestion['type'] === 'select' 
-                ? $this->newQuestion['options'] 
+            'options' => $this->newQuestion['type'] === 'radio' || $this->newQuestion['type'] === 'checkbox' || $this->newQuestion['type'] === 'select'
+                ? $this->newQuestion['options']
                 : [],
         ];
 
@@ -84,12 +94,15 @@ class Create extends Component
     protected function initializeDefaultQuestion()
     {
         // Adiciona o campo "Nome Completo" por padrão
-        $this->questions[] = [
-            'question' => 'Nome Completo',
-            'type' => 'text',
-            'is_required' => true,
-            'options' => [],
-            'is_locked' => true
+        $this->questions = [
+            [
+                'question' => 'Nome Completo',
+                'type' => 'text',
+                'is_required' => true,
+                'options' => [],
+                'column_id' => Column::where('name_table', 'pessoas')->where('name_column', 'Nome')->first()->id ?? null,
+                'is_locked' => true
+            ],
         ];
     }
 
@@ -98,6 +111,7 @@ class Create extends Component
         return [
             'id' => $question->id,
             'question' => $question->question,
+            'column_id' => $question->column_id ?? null,
             'type' => $question->type,
             'is_required' => $question->is_required,
             'options' => $question->options ?? [],
@@ -125,7 +139,7 @@ class Create extends Component
         if ($this->questions[$index]['is_locked'] ?? false) {
             return;
         }
-        
+
         unset($this->questions[$index]);
         $this->questions = array_values($this->questions);
     }
@@ -143,6 +157,7 @@ class Create extends Component
                 'type' => 'text',
                 'is_required' => true,
                 'is_locked' => true,
+                'column_id' => Column::where('name_table', 'candidatos')->where('name_column', 'Nome')->first()->id ?? null,
                 'order' => 0
             ]);
         }
@@ -156,6 +171,7 @@ class Create extends Component
         $formData = [
             'name' => $this->name,
             'description' => $this->description,
+            'initials' => $this->initials,
             'is_active' => $this->is_active
         ];
 

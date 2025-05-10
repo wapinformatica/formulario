@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('initials', 20)->unique();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
@@ -19,6 +20,7 @@ return new class extends Migration {
         Schema::create('form_questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('form_id')->constrained()->onDelete('cascade');
+            $table->foreignId('column_id')->nullable()->constrained();
             $table->string('question');
             $table->enum('type', ['text', 'textarea', 'date', 'radio', 'checkbox', 'select', 'email', 'tel', 'number', 'cpf', 'phone', 'cellphone']);
             $table->boolean('is_required')->default(false);
@@ -51,6 +53,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('log_errors');    
+        Schema::dropIfExists('log_errors');
     }
 };

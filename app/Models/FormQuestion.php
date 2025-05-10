@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FormQuestion extends Model
 {
     use HasFactory;
-    protected $fillable = ['form_id', 'question', 'type', 'is_required', 'options', 'order'];
+    protected $fillable = ['form_id', 'column_id', 'question', 'type', 'is_required', 'options', 'order'];
 
     protected $casts = [
         'options' => 'array',
@@ -18,6 +18,11 @@ class FormQuestion extends Model
     public function form()
     {
         return $this->belongsTo(Form::class);
+    }
+
+    public function column()
+    {
+        return $this->belongsTo(Column::class);
     }
 
     public function answers()

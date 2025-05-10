@@ -62,4 +62,10 @@ class AdministrativoController extends Controller
             'role_id' => $id
         ]);
     }
+
+    public function tableColumn()
+    {
+        $this->checkPermission('tablecolumn_view');
+        return view('pages.administrativo.tablecolumn.index');
+    }
 }
