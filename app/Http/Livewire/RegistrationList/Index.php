@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\RegistrationList;
 
+use App\Models\Candidato;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class Index extends Component
     public $title = 'Lista de Cadastro';
     public $pages = 'Formulário';
 
-   
+
     public $search = '';
     public $statusFilter = '';
     public $selectedResponse = null;
@@ -32,20 +33,26 @@ class Index extends Component
 
     public function render()
     {
-        $query = FormResponse::with(['form', 'answers.question'])
-            ->latest();
+        // $query = FormResponse::with(['form', 'answers.question'])
+        //     ->latest();
+
+        // if ($this->search) {
+        //     $query->whereHas('answers', function($q) {
+        //         $q->where('answer', 'like', '%'.$this->search.'%')
+        //             ->whereHas('question', function($q2) {
+        //                 $q2->where('question', 'Nome Completo');
+        //             });
+        //     });
+        // }
+
+        // if ($this->statusFilter) {
+        //     $query->where('status', $this->statusFilter);
+        // }
+
+        $query = Candidato::where('Candidato_ID', '!=', null)->orderBy('Data_Cadastro', 'desc');
 
         if ($this->search) {
-            $query->whereHas('answers', function($q) {
-                $q->where('answer', 'like', '%'.$this->search.'%')
-                    ->whereHas('question', function($q2) {
-                        $q2->where('question', 'Nome Completo');
-                    });
-            });
-        }
-
-        if ($this->statusFilter) {
-            $query->where('status', $this->statusFilter);
+            $query->where('R2', 'like', '%'.$this->search.'%');
         }
 
         return view('livewire.registration-list.index', [
@@ -61,11 +68,13 @@ class Index extends Component
 
     public function viewResponse($responseId)
     {
-        $this->selectedResponse = FormResponse::with(['form', 'answers.question'])
-            ->findOrFail($responseId);
-        
-        $this->approvalStatus = $this->selectedResponse->status;
-        $this->approvalNotes = $this->selectedResponse->approval_notes;
+        // $this->selectedResponse = FormResponse::with(['form', 'answers.question'])
+        //     ->findOrFail($responseId);
+
+        // $this->approvalStatus = $this->selectedResponse->status;
+        // $this->approvalNotes = $this->selectedResponse->approval_notes;
+
+        $this->selectedResponse = Candidato::where('Candidato_ID', $responseId)->first();
     }
 
     public function updateApproval()
@@ -123,11 +132,11 @@ class Index extends Component
 
     //     $pdfPath = 'temp/form-response-'.$responseId.'-'.time().'.pdf';
     //     Storage::put($pdfPath, $pdf->output());
-        
+
     //     $pdfUrl = Storage::url($pdfPath);
-        
+
     //     $this->dispatchBrowserEvent('openPdf', ['pdf_url' => $pdfUrl]);
-        
+
     //     // Opcional: limpar o arquivo depois de um tempo
     //     $this->cleanupTempFile($pdfPath);
     // }

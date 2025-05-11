@@ -186,4 +186,8 @@ class Candidato extends Model
     {
         return $this->belongsTo(Profissao::class, 'Profissao_Conj_ID');
     }
+    public function procedencia()
+    {
+        return $this->belongsTo(ProcedenciaReligiosa::class, 'Proced_Relig_ID');
+    }
 }
