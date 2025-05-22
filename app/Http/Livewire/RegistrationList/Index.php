@@ -100,19 +100,36 @@ class Index extends Component
         $this->reset(['selectedResponse', 'approvalStatus', 'approvalNotes']);
     }
 
-    public function generatePdf($responseId)
+    public function downloadPhoto($responseId)
     {
-        $response = FormResponse::with(['form', 'answers.question'])
-            ->findOrFail($responseId);
+        $response = Candidato::where('Candidato_ID', $responseId)->first();
+
+        return response()->download(storage_path("app/public/{$response->R3}"));
+    }
+
+    public function downloadDocument($responseId)
+    {
+        $response = Candidato::where('Candidato_ID', $responseId)->first();
+
+        return response()->download(storage_path("app/public/{$response->R1}"));
+    }
+
+    public function generatePdf($responseId, $answers = true)
+    {
+        // $response = FormResponse::with(['form', 'answers.question'])
+        //     ->findOrFail($responseId);
+
+        $response = Candidato::where('Candidato_ID', $responseId)->first();
 
         $pdf = Pdf::loadView('pdf.form-response', [
-            'response' => $response
+            'response' => $response,
+            'answers' => $answers,
         ]);
 
         // Opção 1: Download direto
         return response()->streamDownload(
             fn () => print($pdf->output()),
-            "formulario-{$response->id}.pdf"
+            "candidato-{$response->Candidato_ID}.pdf"
         );
 
         // Opção 2: Salvar no storage e retornar URL

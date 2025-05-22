@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <div class="text-center pb-3">
-                        <img class="img-thumbnail rounded-circle" style="width: 200px; height: 200px;" src="{{asset('logo.jpeg')}}" alt=""/>
+                        {{-- <img class="img-thumbnail rounded-circle" style="width: 200px; height: 200px;" src="{{asset('logo.jpeg')}}" alt=""/> --}}
+                        <img class="img-thumbnail" style="max-width: 300px; max-height: 300px; height: auto;" src="{{asset('logo.jpeg')}}" alt=""/>
                     </div>
                 </div>
             </div>

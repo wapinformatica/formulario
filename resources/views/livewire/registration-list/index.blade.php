@@ -44,7 +44,7 @@
                                     <th>ID</th>
                                     <th>Nome Completo</th>
                                     <th>CPF</th>
-                                    <th>Data</th>
+                                    <th>Data Cadastro</th>
                                     {{-- <th>Status</th> --}}
                                     <th>Ações</th>
                                 </tr>
@@ -67,7 +67,7 @@
                                                 ($response->status == 'rejected' ? 'Rejeitado' : 'Pendente') }}
                                             </span>
                                         </td> --}}
-                                        <td>
+                                        {{-- <td>
                                             <div class="btn-group" role="group">
                                                 <button wire:click="viewResponse({{ $response->Candidato_ID }})"
                                                         class="btn btn-sm btn-primary mr-2">
@@ -79,6 +79,32 @@
                                                         <i class="fas fa-print"></i> Imprimir
                                                     </button>
                                                 @endcan
+                                            </div>
+                                        </td> --}}
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-bars"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a wire:click="viewResponse({{ $response->Candidato_ID }})" class="dropdown-item" href="#">
+                                                        <i class="fas fa-eye mr-2"></i> Visualizar
+                                                    </a>
+                                                    @can('registrationlist_print')
+                                                        <a wire:click="generatePdf({{ $response->Candidato_ID }}, true)" class="dropdown-item" href="#">
+                                                            <i class="fas fa-file-alt mr-2"></i> Relátorio Completo
+                                                        </a>
+                                                        <a wire:click="generatePdf({{ $response->Candidato_ID }}, false)" class="dropdown-item" href="#">
+                                                            <i class="fas fa-file mr-2"></i> Relátorio Parcial
+                                                        </a>
+                                                        <a wire:click="downloadPhoto({{ $response->Candidato_ID }})" class="dropdown-item" href="#">
+                                                            <i class="far fa-image mr-2"></i> Foto Candidato
+                                                        </a>
+                                                        <a wire:click="downloadDocument({{ $response->Candidato_ID }})" class="dropdown-item" href="#">
+                                                            <i class="far fa-file-alt mr-2"></i> Certidão de Casamento
+                                                        </a>
+                                                    @endcan
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -308,7 +334,7 @@
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual a data do Batismo?</td>
-                                                <td>{{ $selectedResponse->R11 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R11 ? date('d/m/Y', strtotime($selectedResponse->R11)) : 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual o Nome do Pastor Oficiante do Batismo?</td>
@@ -320,7 +346,7 @@
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual a data da Profissão de Fé?</td>
-                                                <td>{{ $selectedResponse->R14 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R14 ? date('d/m/Y', strtotime($selectedResponse->R14)) : 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual o Nome do Pastor Oficiante da Profissão de Fé?</td>
@@ -348,7 +374,7 @@
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso de Outra Igreja Evangélica, qual a data do Batismo?</td>
-                                                <td>{{ $selectedResponse->R23 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R23 ? date('d/m/Y', strtotime($selectedResponse->R23)) : 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso de Outra Igreja Evangélica, qual o Nome do Pastor Oficiante do Batismo?</td>
@@ -461,20 +487,20 @@
 
                             <hr>
 
-                            <h5>Aprovação/Rejeição</h5>
+                            {{-- <h5>Aprovação/Rejeição</h5> --}}
                             <form wire:submit.prevent="updateApproval">
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label>Status</label>
                                     <select class="form-control" wire:model="approvalStatus">
                                         <option value="pending">Pendente</option>
                                         <option value="approved">Aprovar</option>
                                         <option value="rejected">Rejeitar</option>
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group text-right">
                                     <button type="button" class="btn btn-secondary" wire:click="closeModal">Fechar</button>
-                                    @if($selectedResponse->processed_at)
+                                    {{-- @if($selectedResponse->processed_at)
                                         @can('registrationlist_change')
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                         @endcan
@@ -482,7 +508,7 @@
                                         @can('registrationlist_approval')
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                         @endcan
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </form>
                         </div>
