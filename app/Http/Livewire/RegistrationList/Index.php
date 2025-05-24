@@ -104,14 +104,14 @@ class Index extends Component
     {
         $response = Candidato::where('Candidato_ID', $responseId)->first();
 
-        return response()->download(storage_path("app/public/{$response->R3}"));
+        return response()->download(storage_path("app/public/{$response->Foto}"));
     }
 
     public function downloadDocument($responseId)
     {
         $response = Candidato::where('Candidato_ID', $responseId)->first();
 
-        return response()->download(storage_path("app/public/{$response->R1}"));
+        return response()->download(storage_path("app/public/{$response->Certidao_Casamento}"));
     }
 
     public function generatePdf($responseId, $answers = true)

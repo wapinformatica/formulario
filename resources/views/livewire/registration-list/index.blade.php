@@ -37,7 +37,7 @@
                         </div>
                     </div>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="min-height: 200px !important;">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -54,7 +54,7 @@
                                     <tr>
                                         <td>{{ $response->Candidato_ID }}</td>
                                         <td>
-                                            {{ $response->R2 }}
+                                            {{ $response->Nome_Candidato }}
                                         </td>
                                         <td>{{ $response->Cpf }}</td>
                                         <td>{{date('d/m/Y', strtotime($response->Data_Cadastro))}}</td>
@@ -143,7 +143,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <p><strong>Nome do Candidato:</strong> {{ $selectedResponse->R2 }}</p>
+                                    <p><strong>Nome do Candidato:</strong> {{ $selectedResponse->Nome_Candidato }}</p>
                                 </div>
                                 <div class="col-md-6">
                                     <p><strong>Nome da Mãe:</strong> {{ $selectedResponse->Nome_Mae }}</p>
@@ -281,10 +281,10 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <p><strong>Certidão de Casamento:</strong> {{ $selectedResponse->R1 ? 'Enviado' : 'Não enviado' }}</p>
+                                    <p><strong>Certidão de Casamento:</strong> {{ $selectedResponse->Certidao_Casamento ? 'Enviado' : 'Não enviado' }}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p><strong>Foto:</strong> {{ $selectedResponse->R3 ? 'Enviada' : 'Não enviada' }}</p>
+                                    <p><strong>Foto:</strong> {{ $selectedResponse->Foto ? 'Enviada' : 'Não enviada' }}</p>
                                 </div>
                             </div>
 
@@ -307,18 +307,18 @@
                                         <tbody>
                                             <tr>
                                                 <td width="40%">Se casado(a), seu cônjuge frequenta a Igreja (IPC) com você?</td>
-                                                <td>{{ $selectedResponse->R4 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R1 ?? 'Não informado' }}</td>
                                             <tr>
                                                 <td width="40%">Há quanto tempo frequenta a IPC?</td>
-                                                <td>{{ $selectedResponse->R5 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R2 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Se tem filhos, quantos são menores de idade e moram com você?</td>
-                                                <td>{{ $selectedResponse->R6 ?? 'Nenhum' }}</td>
+                                                <td>{{ $selectedResponse->R3 ?? 'Nenhum' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Estes filhos Menores de idade serão recebidos na IPC com você?</td>
-                                                <td>{{ $selectedResponse->R7 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R4 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Última Procedência Religiosa (Denominação):</td>
@@ -326,159 +326,159 @@
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, chegou a ser membro?</td>
-                                                <td>{{ $selectedResponse->R9 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R6 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual o Nome da Igreja do Batismo?</td>
-                                                <td>{{ $selectedResponse->R10 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R7 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual a data do Batismo?</td>
-                                                <td>{{ $selectedResponse->R11 ? date('d/m/Y', strtotime($selectedResponse->R11)) : 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R8 ? date('d/m/Y', strtotime($selectedResponse->R8)) : 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual o Nome do Pastor Oficiante do Batismo?</td>
-                                                <td>{{ $selectedResponse->R12 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R9 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual o Nome da Igreja da Profissão da Fé?</td>
-                                                <td>{{ $selectedResponse->R13 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R10 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual a data da Profissão de Fé?</td>
-                                                <td>{{ $selectedResponse->R14 ? date('d/m/Y', strtotime($selectedResponse->R14)) : 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R11 ? date('d/m/Y', strtotime($selectedResponse->R11)) : 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso da IPB, qual o Nome do Pastor Oficiante da Profissão de Fé?</td>
-                                                <td>{{ $selectedResponse->R15 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R12 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você já está frequentando a Escola Bíblica aos Domingos?</td>
-                                                <td>{{ $selectedResponse->R18 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R13 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Caso afirmativo, está matriculado em qual classe?</td>
-                                                <td>{{ $selectedResponse->R19 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R14 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você já está frequentando algum Grupo Familiar, Ministério ou Sociedade Interna?</td>
-                                                <td>{{ $selectedResponse->R20 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R15 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Se Sim, especifique:</td>
-                                                <td>{{ $selectedResponse->R21 ?? 'Não informado' }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="40%">Em caso de outra Igreja Evangélica, chegou a ser membro?</td>
-                                                <td>{{ $selectedResponse->R22 ?? 'Não informado' }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="40%">Em caso de Outra Igreja Evangélica, qual a data do Batismo?</td>
-                                                <td>{{ $selectedResponse->R23 ? date('d/m/Y', strtotime($selectedResponse->R23)) : 'Não informado' }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="40%">Em caso de Outra Igreja Evangélica, qual o Nome do Pastor Oficiante do Batismo?</td>
-                                                <td>{{ $selectedResponse->R24 ?? 'Não informado' }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="40%">Exerceu alguma função na igreja?</td>
                                                 <td>{{ $selectedResponse->R16 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
-                                                <td width="40%">Se exerceu alguma Função ou Cargo na Igreja, cite as que mais te agradou:</td>
+                                                <td width="40%">Em caso de outra Igreja Evangélica, chegou a ser membro?</td>
                                                 <td>{{ $selectedResponse->R17 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
+                                                <td width="40%">Em caso de Outra Igreja Evangélica, qual a data do Batismo?</td>
+                                                <td>{{ $selectedResponse->R18 ? date('d/m/Y', strtotime($selectedResponse->R18)) : 'Não informado' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%">Em caso de Outra Igreja Evangélica, qual o Nome do Pastor Oficiante do Batismo?</td>
+                                                <td>{{ $selectedResponse->R19 ?? 'Não informado' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%">Exerceu alguma função na igreja?</td>
+                                                <td>{{ $selectedResponse->R20 ?? 'Não informado' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%">Se exerceu alguma Função ou Cargo na Igreja, cite as que mais te agradou:</td>
+                                                <td>{{ $selectedResponse->R21 ?? 'Não informado' }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td width="40%">Por qual(ais) razão(ões) deixou ou deseja transferir-se da sua ex-Igreja?</td>
-                                                <td>{{ $selectedResponse->R25 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R22 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Como você conheceu a Igreja Presbiteriana de Cuiabá (IPC)?</td>
-                                                <td>{{ $selectedResponse->R26 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R23 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você sofre alguma perseguição, rejeição ou resistência, especialmente em sua família, pelo fato de ser crente?</td>
-                                                <td>{{ $selectedResponse->R27 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R24 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você sofre alguma perseguição, rejeição ou resistência, especialmente em sua família, por ser membro da Igreja Presbiteriana?</td>
-                                                <td>{{ $selectedResponse->R28 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R25 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso afirmativo, como tem sido a sua postura?</td>
-                                                <td>{{ $selectedResponse->R29 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R26 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você tem (ou já teve) algum vício (hábito)? Por exemplo: fumo, álcool, jogos de azar, baralho, loterias, sinuca, etc.</td>
-                                                <td>{{ $selectedResponse->R30 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R27 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso de resposta afirmativa, chegou a ser dependente?</td>
-                                                <td>{{ $selectedResponse->R31 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R28 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você tem problemas com dívidas financeiras?</td>
-                                                <td>{{ $selectedResponse->R32 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R29 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Como você tem administrado essa área da sua vida?</td>
-                                                <td>{{ $selectedResponse->R33 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R30 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você já frequentou: espiritismo kardecista, centro de mesa branca, terreiro de umbanda, candomblé, quimbanda (magia negra), alguma fraternidade gnóstica (Rosacruz, Logosofia, Seitas metafísicas), seita esotérica ou práticas esotéricas (místicas) tais como: tarô, baralho cigano, búzios (cartomancia em geral), horóscopo, Xamanismo e Santo daime, etc?</td>
-                                                <td>{{ $selectedResponse->R34 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R31 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso de resposta afirmativa qual (ais)? Por quanto tempo? Qual foi o seu "grau" de envolvimento? Fez algum pacto?</td>
-                                                <td>{{ $selectedResponse->R35 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R32 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você já frequentou ou frequenta a Maçonaria?</td>
-                                                <td>{{ $selectedResponse->R36 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R33 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Caso esteja frequentando ou já tenha frequentado a maçonaria, qual o seu "grau" de envolvimento?</td>
-                                                <td>{{ $selectedResponse->R37 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R34 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Caso ainda esteja frequentando a maçonaria, você pretende deixá-la (renunciá-la) para se tornar membro da IPC?</td>
-                                                <td>{{ $selectedResponse->R38 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R35 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Por que você pretende se tornar membro da IPC?</td>
-                                                <td>{{ $selectedResponse->R39 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R36 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">O quanto você conhece da história, do sistema de doutrina e governo da Igreja Presbiteriana do Brasil?</td>
-                                                <td>{{ $selectedResponse->R40 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R37 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você tem dúvidas ou resistência sobre o sistema de governo ou alguma doutrina específica da Igreja Presbiteriana do Brasil?</td>
-                                                <td>{{ $selectedResponse->R41 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R38 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Em caso afirmativo, qual (ais) são as suas dúvidas e/ou resistências?</td>
-                                                <td>{{ $selectedResponse->R42 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R39 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Você está disposto(a), receptivo(a), para receber ensinamentos visando sanar as suas dúvidas e desfazer as suas resistências?</td>
-                                                <td>{{ $selectedResponse->R43 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R40 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">A IPC entende que a prática do dízimo e da oferta, faz parte da devoção cristã, é atual e é a maneira do cristão demonstrar a sua fidelidade a Deus e generosidade, ao mesmo tempo que sustenta a Igreja e a sua obra. Você concorda com a prática de dizimar e ofertar?</td>
-                                                <td>{{ $selectedResponse->R44 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R41 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">Qual a sua situação hoje?</td>
-                                                <td>{{ $selectedResponse->R45 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R42 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">I - Sociedades Internas & Ministérios</td>
-                                                <td>{{ $selectedResponse->R46 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R43 ?? 'Não informado' }}</td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">II - Departamento de Responsabilidade Social</td>
-                                                <td>{{ $selectedResponse->R47 ?? 'Não informado' }}</td>
+                                                <td>{{ $selectedResponse->R44 ?? 'Não informado' }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

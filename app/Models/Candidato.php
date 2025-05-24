@@ -12,7 +12,7 @@ class Candidato extends Model
     protected $primaryKey = 'Candidato_ID';
     protected $fillable =
     [
-        'R2',
+        'Nome_Candidato',
         'Nome_Mae',
         'Nome_Pai',
         'Naturalidade_ID',
@@ -64,13 +64,16 @@ class Candidato extends Model
         'Data_Nasc_F5',
         'Naturalidade_F5_ID',
         'Sexo',
+        'Certidao_Casamento',
+        'Foto',
         'R1',
+        'R2',
         'R3',
         'R4',
-        'R5',
+        'Proced_Relig_ID',
         'R6',
         'R7',
-        'Proced_Relig_ID',
+        'R8',
         'R9',
         'R10',
         'R11',
@@ -78,6 +81,8 @@ class Candidato extends Model
         'R13',
         'R14',
         'R15',
+        'R16',
+        'R17',
         'R18',
         'R19',
         'R20',
@@ -85,8 +90,6 @@ class Candidato extends Model
         'R22',
         'R23',
         'R24',
-        'R16',
-        'R17',
         'R25',
         'R26',
         'R27',
@@ -107,9 +110,6 @@ class Candidato extends Model
         'R42',
         'R43',
         'R44',
-        'R45',
-        'R46',
-        'R47',
     ];
 
     protected $table = 'candidatos';
@@ -133,9 +133,9 @@ class Candidato extends Model
         'Data_Nasc_F3' => 'date:Y-m-d',
         'Data_Nasc_F4' => 'date:Y-m-d',
         'Data_Nasc_F5' => 'date:Y-m-d',
+        'R8' => 'date:Y-m-d',
         'R11' => 'date:Y-m-d',
-        'R14' => 'date:Y-m-d',
-        'R23' => 'date:Y-m-d',
+        'R18' => 'date:Y-m-d',
     ];
 
     public function setAttribute($key, $value)

@@ -19,7 +19,7 @@ class CandidateForm extends Component
     public $success = false;
 
     public $data = [
-        'R2' => '', //Nome completo
+        'Nome_Candidato' => '',
         'Nome_Mae' => '',
         'Nome_Pai' => '',
         'Naturalidade_ID' => NULL,
@@ -66,21 +66,25 @@ class CandidateForm extends Component
         'P_52' => '',
         'Data_Nasc_F5' => NULL,
         'Sexo' => '',
+        'Certidao_Casamento' => '',
+        'Foto' => '',
         'R1' => '',
+        'R2' => '',
         'R3' => '',
         'R4' => '',
         'R5' => '',
         'R6' => '',
         'R7' => '',
+        'R8' => NULL,
         'Proced_Relig_ID' => NULL,
         'R9' => '',
         'R10' => '',
-        'R11' => '',
+        'R11' => NULL,
         'R12' => '',
         'R13' => '',
         'R14' => '',
         'R15' => '',
-        'R18' => '',
+        'R18' => NULL,
         'R19' => '',
         'R20' => '',
         'R21' => '',
@@ -140,9 +144,9 @@ class CandidateForm extends Component
     protected function rules()
     {
         return [
-            'data.R2' => 'required|string|max:50',
+            'data.Nome_Candidato' => 'required|string|max:50',
             'data.Nome_Mae' => 'required|string|max:50',
-            'data.Nome_Pai' => 'required|string|max:50',
+            'data.Nome_Pai' => 'nullable|string|max:50',
             'data.Naturalidade_ID' => 'required|exists:cidades,Cidade_ID',
             'data.Cidade_Origem_ID' => 'required|exists:cidades,Cidade_ID',
             'data.Cpf' => 'required|string|max:14|cpf',
@@ -191,52 +195,52 @@ class CandidateForm extends Component
             'data.Data_Nasc_F5' => 'nullable|date',
             'data.Naturalidade_F5_ID' => 'nullable|exists:cidades,Cidade_ID',
             'data.Sexo' => 'required|in:M,F',
-            'data.R1' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'data.R3' => 'required|file|image|max:2048',
+            'data.Certidao_Casamento' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'data.Foto' => 'required|file|image|max:2048',
+            'data.R1' => 'nullable|in:Sim,Não',
+            'data.R2' => 'required|string|max:8',
+            'data.R3' => 'nullable|string|max:1',
             'data.R4' => 'nullable|in:Sim,Não',
-            'data.R5' => 'required|string|max:8',
-            'data.R6' => 'nullable|string|max:1',
-            'data.R7' => 'nullable|in:Sim,Não',
             'data.Proced_Relig_ID' => 'required|exists:procedencia_religiosa,Proced_Relig_ID',
-            'data.R9' => 'nullable|in:Sim,Não',
+            'data.R6' => 'nullable|in:Sim,Não',
+            'data.R7' => 'nullable|string|max:50',
+            'data.R8' => 'nullable|date',
+            'data.R9' => 'nullable|string|max:80',
             'data.R10' => 'nullable|string|max:50',
             'data.R11' => 'nullable|date',
             'data.R12' => 'nullable|string|max:80',
-            'data.R13' => 'nullable|string|max:50',
-            'data.R14' => 'nullable|date',
-            'data.R15' => 'required|string|max:80',
-            'data.R16' => 'required|in:Sim,Não',
-            'data.R17' => 'nullable|string|max:100',
-            'data.R18' => 'required|in:Sim,Não',
+            'data.R13' => 'required|in:Sim,Não',
+            'data.R14' => 'nullable|string|max:50',
+            'data.R15' => 'required|in:Sim,Não',
+            'data.R16' => 'nullable|string|max:50',
+            'data.R17' => 'nullable|in:Sim,Não',
+            'data.R18' => 'nullable|date',
             'data.R19' => 'nullable|string|max:50',
             'data.R20' => 'required|in:Sim,Não',
             'data.R21' => 'nullable|string|max:50',
-            'data.R22' => 'nullable|in:Sim,Não',
-            'data.R23' => 'nullable|date',
-            'data.R24' => 'nullable|string|max:50',
-            'data.R25' => 'nullable|string',
+            'data.R22' => 'nullable|string',
+            'data.R23' => 'nullable|string',
+            'data.R24' => 'required|in:Sim,Não',
+            'data.R25' => 'required|in:Sim,Não',
             'data.R26' => 'nullable|string',
             'data.R27' => 'required|in:Sim,Não',
-            'data.R28' => 'required|in:Sim,Não',
-            'data.R29' => 'nullable|string',
-            'data.R30' => 'required|in:Sim,Não',
-            'data.R31' => 'nullable|in:Sim,Não',
-            'data.R32' => 'required|in:Sim,Não',
-            'data.R33' => 'required|string',
-            'data.R34' => 'required|in:Sim,Não',
-            'data.R35' => 'nullable|string',
-            'data.R36' => 'required|in:Sim,Não',
-            'data.R37' => 'nullable|string|max:100',
-            'data.R38' => 'nullable|in:Sim,Não',
-            'data.R39' => 'required|string|max:100',
-            'data.R40' => 'required|string',
+            'data.R28' => 'nullable|in:Sim,Não',
+            'data.R29' => 'required|in:Sim,Não',
+            'data.R30' => 'required|string',
+            'data.R31' => 'required|in:Sim,Não',
+            'data.R32' => 'nullable|string',
+            'data.R33' => 'required|in:Sim,Não',
+            'data.R34' => 'nullable|string|max:100',
+            'data.R35' => 'nullable|in:Sim,Não',
+            'data.R36' => 'required|string',
+            'data.R37' => 'required|string',
+            'data.R38' => 'required|in:Sim,Não',
+            'data.R39' => 'nullable|string',
+            'data.R40' => 'required|in:Sim,Não',
             'data.R41' => 'required|in:Sim,Não',
-            'data.R42' => 'nullable|string',
-            'data.R43' => 'required|in:Sim,Não',
-            'data.R44' => 'required|in:Sim,Não',
-            'data.R45' => 'required|string',
-            'data.R46' => 'required|string',
-            'data.R47' => 'required|string',
+            'data.R42' => 'required|string',
+            'data.R43' => 'required|string',
+            'data.R44' => 'required|string',
         ];
     }
 
@@ -253,7 +257,7 @@ class CandidateForm extends Component
             'file' => 'O campo :attribute deve ser um arquivo válido.',
             'image' => 'O campo :attribute deve ser uma imagem.',
             'mimes' => 'O campo :attribute deve ser um arquivo do tipo: :values.',
-            'data.R3.required' => 'A foto é obrigatória.',
+            'data.Foto.required' => 'A foto é obrigatória.',
             'data.Cpf.cpf' => 'O CPF deve estar no formato válido.',
         ];
     }
@@ -266,12 +270,12 @@ class CandidateForm extends Component
 
         $this->setEmptyStringsToNull($this->data);
 
-        if ($this->data['R3']) {
-            $this->data['R3'] = $this->data['R3']->store('fotos', 'public');
+        if ($this->data['Foto']) {
+            $this->data['Foto'] = $this->data['Foto']->store('fotos', 'public');
         }
 
-        if (!empty($this->data['R1'])) {
-            $this->data['R1'] = $this->data['R1']->store('documentos', 'public');
+        if (!empty($this->data['Certidao_Casamento'])) {
+            $this->data['Certidao_Casamento'] = $this->data['Certidao_Casamento']->store('documentos', 'public');
         }
 
         Candidato::create($this->data);
