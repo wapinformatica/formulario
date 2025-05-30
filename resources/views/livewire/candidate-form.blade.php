@@ -1172,10 +1172,10 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>I - Sociedades Internas & Ministérios <span class="text-danger">*</span></label>
-                                    <select wire:model.defer="data.R43" required class="form-control">
-                                        <option value="">Selecione...</option>
+                                    <select wire:model.defer="data.R43" required class="form-control" multiple>
+                                        {{-- <option value="">Selecione...</option> --}}
                                         @foreach($sociedades as $sociedade)
-                                            <option value="{{ $sociedade->Sociedade_Interna_ID }}">{{ $sociedade->Sociedade_Interna_Nome }}</option>
+                                            <option value="{{ $sociedade->Sociedade_Interna_Nome }}">{{ $sociedade->Sociedade_Interna_Nome }}</option>
                                         @endforeach
                                     </select>
                                     @error("data.R43")
@@ -1187,10 +1187,10 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>II - Departamento de Responsabilidade Social <span class="text-danger">*</span></label>
-                                    <select wire:model.defer="data.R44" required class="form-control">
-                                        <option value="">Selecione...</option>
+                                    <select wire:model.defer="data.R44" required class="form-control" multiple>
+                                        {{-- <option value="">Selecione...</option> --}}
                                         @foreach($departamentos as $departamento)
-                                            <option value="{{ $departamento->Depart_Resp_Social_ID }}">{{ $departamento->Depart_Resp_Social_Nome }}</option>
+                                            <option value="{{ $departamento->Depart_Resp_Social_Nome }}">{{ $departamento->Depart_Resp_Social_Nome }}</option>
                                         @endforeach
                                     </select>
                                     @error("data.R44")

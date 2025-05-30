@@ -249,8 +249,8 @@ class CandidateForm extends Component
             'data.R40' => 'required|in:Sim,Não',
             'data.R41' => 'required|in:Sim,Não',
             'data.R42' => 'required|string',
-            'data.R43' => 'required|exists:depart_resp_social,Depart_Resp_Social_ID',
-            'data.R44' => 'required|exists:sociedades_internas,Sociedade_Interna_ID',
+            'data.R43' => 'required',
+            'data.R44' => 'required',
         ];
     }
 
@@ -281,6 +281,16 @@ class CandidateForm extends Component
 
         $this->setEmptyStringsToNull($this->data);
 
+        if(!empty($this->data['R43'])){
+            $this->data['R43'] = implode('/', $this->data['R43']);
+        }
+
+        if(!empty($this->data['R44'])){
+            $this->data['R44'] = implode('/', $this->data['R44']);
+        }
+
+        // dd($this->data['R43'], $this->data['R44']);
+
 
         if(($this->data['Estado_Civil_ID'] == 1) OR ($this->data['Estado_Civil_ID'] == '1')){
             if(($this->data['URL_Certidao_Casamento'] == '') AND ($this->data['Certidao_Casamento'] == '') ){
@@ -289,6 +299,20 @@ class CandidateForm extends Component
         }
 
         if ($this->data['Foto']) {
+            $caminhoTemporario = $this->data['Foto']->getRealPath();
+            $caminhoRedimensionado = storage_path('app/livewire-tmp/redimensionada_' . $this->data['Foto']->getFilename());
+
+            // Redimensiona usando GD
+            $this->redimensionarImagemGD($caminhoTemporario, $caminhoRedimensionado);
+
+            // Substitui o arquivo temporário pelo redimensionado
+            $this->data['Foto'] = new \Illuminate\Http\UploadedFile(
+                $caminhoRedimensionado,
+                $this->data['Foto']->getClientOriginalName(),
+                mime_content_type($caminhoRedimensionado),
+                null,
+                true
+            );
             $this->data['Foto'] = $this->data['Foto']->store('fotos', 'public');
         }
 
@@ -328,5 +352,98 @@ class CandidateForm extends Component
             }
         }
         return $attributes;
+    }
+
+    /**
+     * Redimensiona uma imagem para 448x336px usando GD (sem dependências externas).
+     *
+     * @param string $caminhoImagemOriginal Caminho da imagem original.
+     * @param string $caminhoImagemRedimensionada Onde a nova imagem será salva.
+     * @return bool True se sucesso, False se falhar.
+     */
+    function redimensionarImagemGD($caminhoImagemOriginal, $caminhoImagemRedimensionada) {
+        // Verifica se a extensão GD está habilitada
+        if (!extension_loaded('gd')) {
+            throw new \Exception("A extensão GD não está ativada no PHP.");
+        }
+
+        // Obtém informações da imagem original
+        list($larguraOriginal, $alturaOriginal, $tipo) = getimagesize($caminhoImagemOriginal);
+
+        // Cria uma imagem GD a partir do arquivo original
+        switch ($tipo) {
+            case IMAGETYPE_JPEG:
+                $imagemOriginal = imagecreatefromjpeg($caminhoImagemOriginal);
+                break;
+            case IMAGETYPE_PNG:
+                $imagemOriginal = imagecreatefrompng($caminhoImagemOriginal);
+                break;
+            case IMAGETYPE_GIF:
+                $imagemOriginal = imagecreatefromgif($caminhoImagemOriginal);
+                break;
+            default:
+                throw new \Exception("Formato de imagem não suportado (use JPEG, PNG ou GIF).");
+        }
+
+        // Define o novo tamanho (448x336px)
+        $larguraNova = 448;
+        $alturaNova = 336;
+
+        // Cria uma nova imagem em branco com o tamanho desejado
+        $imagemRedimensionada = imagecreatetruecolor($larguraNova, $alturaNova);
+
+        // Preserva transparência para PNG/GIF
+        if ($tipo == IMAGETYPE_PNG || $tipo == IMAGETYPE_GIF) {
+            imagecolortransparent($imagemRedimensionada, imagecolorallocatealpha($imagemRedimensionada, 0, 0, 0, 127));
+            imagealphablending($imagemRedimensionada, false);
+            imagesavealpha($imagemRedimensionada, true);
+        }
+
+        // Redimensiona a imagem original para o novo tamanho (com crop centralizado)
+        $proporcaoOriginal = $larguraOriginal / $alturaOriginal;
+        $proporcaoDesejada = $larguraNova / $alturaNova;
+
+        if ($proporcaoOriginal > $proporcaoDesejada) {
+            // Corta lateralmente (mantém a altura)
+            $alturaTemp = $alturaOriginal;
+            $larguraTemp = $alturaOriginal * $proporcaoDesejada;
+            $x = ($larguraOriginal - $larguraTemp) / 2;
+            $y = 0;
+        } else {
+            // Corta verticalmente (mantém a largura)
+            $larguraTemp = $larguraOriginal;
+            $alturaTemp = $larguraOriginal / $proporcaoDesejada;
+            $x = 0;
+            $y = ($alturaOriginal - $alturaTemp) / 2;
+        }
+
+        // Copia e redimensiona a imagem
+        imagecopyresampled(
+            $imagemRedimensionada,    // Imagem de destino
+            $imagemOriginal,          // Imagem original
+            0, 0,                     // Destino X/Y
+            $x, $y,                   // Origem X/Y (crop)
+            $larguraNova, $alturaNova, // Largura/Altura destino
+            $larguraTemp, $alturaTemp  // Largura/Altura origem (recortada)
+        );
+
+        // Salva a imagem redimensionada
+        switch ($tipo) {
+            case IMAGETYPE_JPEG:
+                imagejpeg($imagemRedimensionada, $caminhoImagemRedimensionada, 85); // 85% de qualidade
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($imagemRedimensionada, $caminhoImagemRedimensionada, 8); // Nível de compressão (0-9)
+                break;
+            case IMAGETYPE_GIF:
+                imagegif($imagemRedimensionada, $caminhoImagemRedimensionada);
+                break;
+        }
+
+        // Libera memória
+        imagedestroy($imagemOriginal);
+        imagedestroy($imagemRedimensionada);
+
+        return true;
     }
 }
