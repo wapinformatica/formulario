@@ -1214,4 +1214,36 @@
             </div>
         @endif
     </div>
+    <!-- Modal de Erros -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Erros no Formulário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                @foreach ($errors->all() as $error)
+                    <li class="text-danger">{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fim do Modal -->
+
+    @push('scripts')
+        @if ($errors->any())
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    $('#errorModal').modal('show');
+                });
+            </script>
+        @endif
+
+    @endpush
 </div>
