@@ -4,10 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\Candidato;
 use App\Models\Cidade;
+use App\Models\DepartRespSocial;
 use App\Models\EstadoCivil;
 use Livewire\Component;
 use App\Models\ProcedenciaReligiosa;
 use App\Models\Profissao;
+use App\Models\SociedadeInterna;
 use Livewire\WithFileUploads;
 
 class CandidateForm extends Component
@@ -45,6 +47,7 @@ class CandidateForm extends Component
         'Naturalidade_Conj_ID' => NULL,
         'Profissao_Conj_ID' => NULL,
         'Data_Casamento' => NULL,
+        'URL_Certidao_Casamento' => '',
         'Nome_F1' => '',
         'P_11' => '',
         'P_12' => '',
@@ -126,18 +129,24 @@ class CandidateForm extends Component
 
     public $procedencias = [];
 
-    public function render()
-    {
-        return view('livewire.candidate-form');
-    }
+    public $sociedades = [];
 
-    public function mount()
+    public $departamentos = [];
+
+    public function render()
     {
         $this->cidades = Cidade::whereNotNull('Cidade_ID')->get();
         $this->profissoes = Profissao::whereNotNull('Profissao_ID')->get();
         $this->estadoCivils = EstadoCivil::whereNotNull('Estado_Civil_ID')->get();
         $this->procedencias = ProcedenciaReligiosa::whereNotNull('Proced_Relig_ID')->get();
+        $this->sociedades = SociedadeInterna::whereNotNull('Sociedade_Interna_ID')->get();
+        $this->departamentos = DepartRespSocial::whereNotNull('Depart_Resp_Social_ID')->get();
 
+        return view('livewire.candidate-form');
+    }
+
+    public function mount()
+    {
         $this->data['Data_Cadastro'] = date('Y-m-d');
     }
 
@@ -149,7 +158,7 @@ class CandidateForm extends Component
             'data.Nome_Pai' => 'nullable|string|max:50',
             'data.Naturalidade_ID' => 'required|exists:cidades,Cidade_ID',
             'data.Cidade_Origem_ID' => 'required|exists:cidades,Cidade_ID',
-            'data.Cpf' => 'required|string|max:14|cpf',
+            'data.Cpf' => 'required|string|max:14',
             'data.Rg' => 'required|string|max:20',
             'data.Orgao_Exp' => 'required|string|max:10',
             'data.e_mail' => 'required|email|max:50',
@@ -195,6 +204,7 @@ class CandidateForm extends Component
             'data.Data_Nasc_F5' => 'nullable|date',
             'data.Naturalidade_F5_ID' => 'nullable|exists:cidades,Cidade_ID',
             'data.Sexo' => 'required|in:M,F',
+            'data.URL_Certidao_Casamento' => 'nullable|string',
             'data.Certidao_Casamento' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'data.Foto' => 'required|file|image|max:2048',
             'data.R1' => 'nullable|in:Sim,Não',
@@ -239,8 +249,8 @@ class CandidateForm extends Component
             'data.R40' => 'required|in:Sim,Não',
             'data.R41' => 'required|in:Sim,Não',
             'data.R42' => 'required|string',
-            'data.R43' => 'required|string',
-            'data.R44' => 'required|string',
+            'data.R43' => 'required|exists:depart_resp_social,Depart_Resp_Social_ID',
+            'data.R44' => 'required|exists:sociedades_internas,Sociedade_Interna_ID',
         ];
     }
 
@@ -264,11 +274,19 @@ class CandidateForm extends Component
 
     public function submit()
     {
+
         $this->cleanEmptyIntegerFields();
 
         $this->validate();
 
         $this->setEmptyStringsToNull($this->data);
+
+
+        if(($this->data['Estado_Civil_ID'] == 1) OR ($this->data['Estado_Civil_ID'] == '1')){
+            if(($this->data['URL_Certidao_Casamento'] == '') AND ($this->data['Certidao_Casamento'] == '') ){
+                return session()->flash('danger', 'Informe a certidão de casamento!');
+            }
+        }
 
         if ($this->data['Foto']) {
             $this->data['Foto'] = $this->data['Foto']->store('fotos', 'public');

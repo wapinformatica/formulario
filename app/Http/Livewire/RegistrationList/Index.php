@@ -49,7 +49,7 @@ class Index extends Component
         //     $query->where('status', $this->statusFilter);
         // }
 
-        $query = Candidato::where('Candidato_ID', '!=', null)->orderBy('Data_Cadastro', 'desc');
+        $query = Candidato::where('Candidato_ID', '!=', null)->where('Candidato_ID', '>', 4)->orderBy('Data_Cadastro', 'asc');
 
         if ($this->search) {
             $query->where('R2', 'like', '%'.$this->search.'%');
@@ -111,7 +111,17 @@ class Index extends Component
     {
         $response = Candidato::where('Candidato_ID', $responseId)->first();
 
-        return response()->download(storage_path("app/public/{$response->Certidao_Casamento}"));
+        if ($response && $response->Certidao_Casamento) {
+            $filePath = storage_path("app/public/{$response->Certidao_Casamento}");
+
+            if (file_exists($filePath)) {
+                return response()->download($filePath);
+            }
+        }
+
+        if ($response && $response->URL_Certidao_Casamento) {
+            return redirect()->away($response->URL_Certidao_Casamento);
+        }
     }
 
     public function generatePdf($responseId, $answers = true)

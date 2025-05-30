@@ -100,9 +100,12 @@
                                                         <a wire:click="downloadPhoto({{ $response->Candidato_ID }})" class="dropdown-item" href="#">
                                                             <i class="far fa-image mr-2"></i> Foto Candidato
                                                         </a>
+                                                        @if( ($response->Certidao_Casamento != '') OR ($response->URL_Certidao_Casamento != ''))
                                                         <a wire:click="downloadDocument({{ $response->Candidato_ID }})" class="dropdown-item" href="#">
                                                             <i class="far fa-file-alt mr-2"></i> Certidão de Casamento
                                                         </a>
+                                                        @endif
+
                                                     @endcan
                                                 </div>
                                             </div>

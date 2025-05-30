@@ -8,7 +8,6 @@
                 </div>
             </div>
         </div>
-
         @if($success)
             <div class="alert alert-success">
                 <h4>Obrigado!</h4>
@@ -130,7 +129,7 @@
 
                             <div class="col-lg-10">
                                 <div class="form-group">
-                                    <label for="Logradouro" class="form-label">Logradouro <span class="text-danger">*</span></label>
+                                    <label for="Logradouro" class="form-label">Logradouro (Av., Rua, etc) <span class="text-danger">*</span></label>
                                     <input wire:model.defer="data.Logradouro" class="form-control" type="text" placeholder="" maxlength="255" required autofocus autocomplete="off">
                                     @error("data.Logradouro")
                                         <span class="text-danger">{{ $message }}</span>
@@ -206,7 +205,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="Fone_Comercial" class="form-label">Telefone Comercial <span class="text-danger">*</span></label>
-                                    <input wire:model.defer="data.Fone_Comercial" x-mask='(99)9999-9999' class="form-control" type="text" placeholder="" maxlength="50" required autofocus autocomplete="off">
+                                    <input wire:model.defer="data.Fone_Comercial" x-mask='99 9999-9999' class="form-control" type="text" placeholder="" maxlength="50" required autofocus autocomplete="off">
                                     @error("data.Fone_Comercial")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -216,7 +215,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="Fone_Celular" class="form-label">Telefone Celular <span class="text-danger">*</span></label>
-                                    <input wire:model.defer="data.Fone_Celular" x-mask='(99)9 9999-9999' class="form-control" type="text" placeholder="" maxlength="50" required autofocus autocomplete="off">
+                                    <input wire:model.defer="data.Fone_Celular" x-mask='99 9999-9999' class="form-control" type="text" placeholder="" maxlength="50" required autofocus autocomplete="off">
                                     @error("data.Fone_Celular")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -241,7 +240,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Estado Civil <span class="text-danger">*</span></label>
-                                    <select wire:model.defer="data.Estado_Civil_ID" required class="form-control">
+                                    <select wire:model="data.Estado_Civil_ID" required class="form-control">
                                         <option value="">Selecione...</option>
                                         @foreach($estadoCivils as $estadoCivil)
                                             <option value="{{ $estadoCivil->Estado_Civil_ID }}">{{ $estadoCivil->Estado_Civil_Nome }}</option>
@@ -628,9 +627,30 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Sexo <span class="text-danger">*</span></label>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Link Certidao Casamento </label>
+                                            <input wire:model.defer="data.URL_Certidao_Casamento" class="form-control" type="text" placeholder="" autofocus autocomplete="off">
+                                            @error("data.URL_Certidao_Casamento")
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Certidao_Casamento" class="form-label">Cópia da Certidão de Casamento</label>
+                                            <input wire:model.defer="data.Certidao_Casamento" class="form-control" type="file">
+                                            @error("data.Certidao_Casamento")
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                            <div class="col-lg-6 hidden">
+                                <div class="form-group hidden">
+                                    <label>Sexo <span class="text-danger hidden">*</span></label>
                                     <select wire:model.defer="data.Sexo" required class="form-control">
                                         <option value="">Selecione...</option>
                                         <option value="M">Masculino</option>
@@ -642,17 +662,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="Certidao_Casamento" class="form-label">Cópia da Certidão de Casamento </label>
-                                    <input wire:model.defer="data.Certidao_Casamento" class="form-control" type="file">
-                                    @error("data.Certidao_Casamento")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="Foto" class="form-label">Foto (Tirar uma Selfie) <span class="text-danger">*</span></label>
                                     <input wire:model.defer="data.Foto" class="form-control" type="file" accept="image/*" required>
@@ -1066,7 +1076,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Caso ainda esteja frequentando a maçonaria, você pretende deixá-la (renunciá-la) para se tornar membro da IPC? </label>
-                                    <select wire:model.defer="data.R35" class="form-control">
+                                    <select wire:model="data.R35" class="form-control">
                                         <option value="">Selecione...</option>
                                         <option value="Sim">Sim</option>
                                         <option value="Não">Não</option>
@@ -1159,20 +1169,30 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="R43" class="form-label">I - Sociedades Internas & Ministérios <span class="text-danger">*</span></label>
-                                    <textarea wire:model.defer="data.R43" class="form-control" rows="3" required autofocus autocomplete="off"></textarea>
+                                    <label>I - Sociedades Internas & Ministérios <span class="text-danger">*</span></label>
+                                    <select wire:model.defer="data.R43" required class="form-control">
+                                        <option value="">Selecione...</option>
+                                        @foreach($sociedades as $sociedade)
+                                            <option value="{{ $sociedade->Sociedade_Interna_ID }}">{{ $sociedade->Sociedade_Interna_Nome }}</option>
+                                        @endforeach
+                                    </select>
                                     @error("data.R43")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="R44" class="form-label">II - Departamento de Responsabilidade Social <span class="text-danger">*</span></label>
-                                    <textarea wire:model.defer="data.R44" class="form-control" rows="3" required autofocus autocomplete="off"></textarea>
+                                    <label>II - Departamento de Responsabilidade Social <span class="text-danger">*</span></label>
+                                    <select wire:model.defer="data.R44" required class="form-control">
+                                        <option value="">Selecione...</option>
+                                        @foreach($departamentos as $departamento)
+                                            <option value="{{ $departamento->Depart_Resp_Social_ID }}">{{ $departamento->Depart_Resp_Social_Nome }}</option>
+                                        @endforeach
+                                    </select>
                                     @error("data.R44")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -1182,12 +1202,12 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">
-                                Enviar Formulário
-                            </button>
                             <a href="{{route('home')}}" class="btn btn-warning">
                                 Cancelar
                             </a>
+                            <button type="submit" class="btn btn-primary">
+                                Enviar Formulário
+                            </button>
                         </div>
                     </form>
                 </div>

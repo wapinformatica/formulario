@@ -53,6 +53,7 @@ class Candidato extends Model
         'P_32',
         'Data_Nasc_F3',
         'Naturalidade_F3_ID',
+        'URL_Certidao_Casamento',
         'Nome_F4',
         'P_41',
         'P_42',
