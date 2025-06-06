@@ -3,13 +3,18 @@
 namespace App\Http\Livewire;
 
 use App\Models\Candidato;
+use App\Models\CandidatoPerguntaQuestionario;
+use App\Models\CandidatoRespostaQuestionario;
 use App\Models\Cidade;
 use App\Models\DepartRespSocial;
+use App\Models\DepartRespSocialCandidato;
 use App\Models\EstadoCivil;
 use Livewire\Component;
 use App\Models\ProcedenciaReligiosa;
 use App\Models\Profissao;
 use App\Models\SociedadeInterna;
+use App\Models\SociedadeInternaCandidato;
+use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 
 class CandidateForm extends Component
@@ -17,9 +22,22 @@ class CandidateForm extends Component
     use WithFileUploads;
     public $form;
     public $formId;
+    public $cities = [];
+    public $Cidade_Origem_ID;
+    public $Cidade_ID;
+    public $Naturalidade_Conj_ID;
+    public $Naturalidade_F1_ID;
+    public $Naturalidade_F2_ID;
+    public $Naturalidade_F3_ID;
+    public $Naturalidade_F4_ID;
+    public $Naturalidade_F5_ID;
+    public $Naturalidade_ID;
+    public $dataR43 = [];
+    public $dataR44 = [];
+
     public $answers = [];
     public $success = false;
-
+    protected $listeners = ['selectedUpdateValue'];
     public $data = [
         'Nome_Candidato' => '',
         'Nome_Mae' => '',
@@ -71,54 +89,19 @@ class CandidateForm extends Component
         'Sexo' => '',
         'Certidao_Casamento' => '',
         'Foto' => '',
-        'R1' => '',
-        'R2' => '',
-        'R3' => '',
-        'R4' => '',
-        'R5' => '',
-        'R6' => '',
-        'R7' => '',
-        'R8' => NULL,
         'Proced_Relig_ID' => NULL,
-        'R9' => '',
-        'R10' => '',
-        'R11' => NULL,
-        'R12' => '',
-        'R13' => '',
-        'R14' => '',
-        'R15' => '',
-        'R18' => NULL,
-        'R19' => '',
-        'R20' => '',
-        'R21' => '',
-        'R22' => '',
-        'R23' => '',
-        'R24' => '',
-        'R16' => '',
-        'R17' => '',
-        'R25' => '',
-        'R26' => '',
-        'R27' => '',
-        'R28' => '',
-        'R29' => '',
-        'R30' => '',
-        'R31' => '',
-        'R32' => '',
-        'R33' => '',
-        'R34' => '',
-        'R35' => '',
-        'R36' => '',
-        'R37' => '',
-        'R38' => '',
-        'R39' => '',
-        'R40' => '',
-        'R41' => '',
-        'R42' => '',
-        'R43' => '',
-        'R44' => '',
-        'R45' => '',
-        'R46' => '',
-        'R47' => '',
+        'IPB_Membro' => '',
+        'IPB_Ig_Bat' => '',
+        'IPB_Data_Bat' => NULL,
+        'IPB_Pr_Bat' => '',
+        'IPB_Ig_Prf_Fe' => '',
+        'IPB_Data_Prof_Fe' => NULL,
+        'IPB_Pr_Prof_Fe' => '',
+        'OIE_Data_Bat' => NULL,
+        'OIE_Pr_Bat' => '',
+        'Exerc_F_Ig' => '',
+        'Se_Sim_Quais' => '',
+        'OIE_Membro' => '',
     ];
 
     public $cidades = [];
@@ -133,20 +116,27 @@ class CandidateForm extends Component
 
     public $departamentos = [];
 
+    public $perguntas = [];
+
+    public $respostas = [];
+
     public function render()
     {
-        $this->cidades = Cidade::whereNotNull('Cidade_ID')->get();
+
         $this->profissoes = Profissao::whereNotNull('Profissao_ID')->get();
         $this->estadoCivils = EstadoCivil::whereNotNull('Estado_Civil_ID')->get();
         $this->procedencias = ProcedenciaReligiosa::whereNotNull('Proced_Relig_ID')->get();
         $this->sociedades = SociedadeInterna::whereNotNull('Sociedade_Interna_ID')->get();
         $this->departamentos = DepartRespSocial::whereNotNull('Depart_Resp_Social_ID')->get();
-
+        $this->perguntas = CandidatoPerguntaQuestionario::where('Ativo', 1)->orderBy('Ordem', 'asc')->get();
+        $this->cities = Cidade::orderBy('Cidade_Nome')
+            ->pluck('Cidade_Nome','Cidade_ID');
         return view('livewire.candidate-form');
     }
 
     public function mount()
     {
+                $this->cidades = Cidade::whereNotNull('Cidade_ID')->get();
         $this->data['Data_Cadastro'] = date('Y-m-d');
     }
 
@@ -207,50 +197,19 @@ class CandidateForm extends Component
             'data.URL_Certidao_Casamento' => 'nullable|string',
             'data.Certidao_Casamento' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'data.Foto' => 'required|file|image|max:2048',
-            'data.R1' => 'nullable|in:Sim,Não',
-            'data.R2' => 'required|string|max:8',
-            'data.R3' => 'nullable|string|max:1',
-            'data.R4' => 'nullable|in:Sim,Não',
             'data.Proced_Relig_ID' => 'required|exists:procedencia_religiosa,Proced_Relig_ID',
-            'data.R6' => 'nullable|in:Sim,Não',
-            'data.R7' => 'nullable|string|max:50',
-            'data.R8' => 'nullable|date',
-            'data.R9' => 'nullable|string|max:80',
-            'data.R10' => 'nullable|string|max:50',
-            'data.R11' => 'nullable|date',
-            'data.R12' => 'nullable|string|max:80',
-            'data.R13' => 'required|in:Sim,Não',
-            'data.R14' => 'nullable|string|max:50',
-            'data.R15' => 'required|in:Sim,Não',
-            'data.R16' => 'nullable|string|max:50',
-            'data.R17' => 'nullable|in:Sim,Não',
-            'data.R18' => 'nullable|date',
-            'data.R19' => 'nullable|string|max:50',
-            'data.R20' => 'required|in:Sim,Não',
-            'data.R21' => 'nullable|string|max:50',
-            'data.R22' => 'nullable|string',
-            'data.R23' => 'nullable|string',
-            'data.R24' => 'required|in:Sim,Não',
-            'data.R25' => 'required|in:Sim,Não',
-            'data.R26' => 'nullable|string',
-            'data.R27' => 'required|in:Sim,Não',
-            'data.R28' => 'nullable|in:Sim,Não',
-            'data.R29' => 'required|in:Sim,Não',
-            'data.R30' => 'required|string',
-            'data.R31' => 'required|in:Sim,Não',
-            'data.R32' => 'nullable|string',
-            'data.R33' => 'required|in:Sim,Não',
-            'data.R34' => 'nullable|string|max:100',
-            'data.R35' => 'nullable|in:Sim,Não',
-            'data.R36' => 'required|string',
-            'data.R37' => 'required|string',
-            'data.R38' => 'required|in:Sim,Não',
-            'data.R39' => 'nullable|string',
-            'data.R40' => 'required|in:Sim,Não',
-            'data.R41' => 'required|in:Sim,Não',
-            'data.R42' => 'required|string',
-            'data.R43' => 'required',
-            'data.R44' => 'required',
+            'data.IPB_Membro' => 'nullable|in:Sim,Não',
+            'data.IPB_Ig_Bat' => 'nullable|string|max:50',
+            'data.IPB_Data_Bat' => 'nullable|date',
+            'data.IPB_Pr_Bat' => 'nullable|string|max:80',
+            'data.IPB_Ig_Prf_Fe' => 'nullable|string|max:50',
+            'data.IPB_Data_Prof_Fe' => 'nullable|date',
+            'data.OIE_Membro' => 'nullable|in:Sim,Não',
+            'data.OIE_Data_Bat' => 'nullable|date',
+            'data.OIE_Pr_Bat' => 'nullable|string|max:50',
+            'data.Se_Sim_Quais' => 'nullable|string|max:100',
+            'dataR43' => 'required',
+            'dataR44' => 'required',
         ];
     }
 
@@ -268,29 +227,28 @@ class CandidateForm extends Component
             'image' => 'O campo :attribute deve ser uma imagem.',
             'mimes' => 'O campo :attribute deve ser um arquivo do tipo: :values.',
             'data.Foto.required' => 'A foto é obrigatória.',
-            'data.Cpf.cpf' => 'O CPF deve estar no formato válido.',
+            'dataR43.required' => 'O campo Sociedades Internas & Ministérios é obrigatório.',
+            'dataR44.required' => 'O campo Departamento de Responsabilidade Social é obrigatório.',
         ];
     }
 
     public function submit()
     {
+        $this->data['Cidade_Origem_ID'] = $this->Cidade_Origem_ID;
+        $this->data['Cidade_ID'] = $this->Cidade_ID;
+        $this->data['Naturalidade_Conj_ID'] = $this->Naturalidade_Conj_ID;
+        $this->data['Naturalidade_F1_ID'] = $this->Naturalidade_F1_ID;
+        $this->data['Naturalidade_F2_ID'] = $this->Naturalidade_F2_ID;
+        $this->data['Naturalidade_F3_ID'] = $this->Naturalidade_F3_ID;
+        $this->data['Naturalidade_F4_ID'] = $this->Naturalidade_F4_ID;
+        $this->data['Naturalidade_F5_ID'] = $this->Naturalidade_F5_ID;
+        $this->data['Naturalidade_ID'] = $this->Naturalidade_ID;
 
         $this->cleanEmptyIntegerFields();
 
         $this->validate();
 
         $this->setEmptyStringsToNull($this->data);
-
-        if(!empty($this->data['R43'])){
-            $this->data['R43'] = implode('/', $this->data['R43']);
-        }
-
-        if(!empty($this->data['R44'])){
-            $this->data['R44'] = implode('/', $this->data['R44']);
-        }
-
-        // dd($this->data['R43'], $this->data['R44']);
-
 
         if(($this->data['Estado_Civil_ID'] == 1) OR ($this->data['Estado_Civil_ID'] == '1')){
             if(($this->data['URL_Certidao_Casamento'] == '') AND ($this->data['Certidao_Casamento'] == '') ){
@@ -320,9 +278,39 @@ class CandidateForm extends Component
             $this->data['Certidao_Casamento'] = $this->data['Certidao_Casamento']->store('documentos', 'public');
         }
 
-        Candidato::create($this->data);
+        try{
+            DB::beginTransaction();
+            $candidato = Candidato::create($this->data);
 
-        $this->success = true;
+            foreach ($this->respostas as $respostaId => $resposta) {
+                CandidatoRespostaQuestionario::create([
+                    'Candidato_ID' => $candidato->Candidato_ID,
+                    'Pergunta_ID' => $respostaId,
+                    'Resposta' => $resposta,
+                ]);
+            }
+
+            foreach($this->dataR43 as $value){
+                SociedadeInternaCandidato::create([
+                    'Sociedade_Interna_ID' => $value,
+                    'Candidato_ID' => $candidato->Candidato_ID,
+                ]);
+            }
+            foreach($this->dataR44 as $value){
+                DepartRespSocialCandidato::create([
+                    'Depart_Resp_Social_ID' => $value,
+                    'Candidato_ID' => $candidato->Candidato_ID,
+                ]);
+            }
+            DB::commit();
+            $this->success = true;
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return session()->flash('danger', 'Houve uma falha tente novamente! ' . $ex->getMessage());
+        }
+
+
+
     }
 
     protected function cleanEmptyIntegerFields()
@@ -342,6 +330,11 @@ class CandidateForm extends Component
                 $this->data[$field] = null;
             }
         }
+    }
+
+    public function selectedUpdateValue($campo, $valor)
+    {
+        $this->$campo = $valor;
     }
 
     protected function setEmptyStringsToNull(array $attributes)

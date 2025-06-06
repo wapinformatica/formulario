@@ -67,50 +67,19 @@ class Candidato extends Model
         'Sexo',
         'Certidao_Casamento',
         'Foto',
-        'R1',
-        'R2',
-        'R3',
-        'R4',
         'Proced_Relig_ID',
-        'R6',
-        'R7',
-        'R8',
-        'R9',
-        'R10',
-        'R11',
-        'R12',
-        'R13',
-        'R14',
-        'R15',
-        'R16',
-        'R17',
-        'R18',
-        'R19',
-        'R20',
-        'R21',
-        'R22',
-        'R23',
-        'R24',
-        'R25',
-        'R26',
-        'R27',
-        'R28',
-        'R29',
-        'R30',
-        'R31',
-        'R32',
-        'R33',
-        'R34',
-        'R35',
-        'R36',
-        'R37',
-        'R38',
-        'R39',
-        'R40',
-        'R41',
-        'R42',
-        'R43',
-        'R44',
+        'IPB_Membro',
+        'IPB_Ig_Bat',
+        'IPB_Data_Bat',
+        'IPB_Pr_Bat',
+        'IPB_Ig_Prf_Fe',
+        'IPB_Data_Prof_Fe',
+        'IPB_Pr_Prof_Fe',
+        'OIE_Membro',
+        'OIE_Data_Bat',
+        'OIE_Pr_Bat',
+        'Exerc_F_Ig',
+        'Se_Sim_Quais',
     ];
 
     protected $table = 'candidatos';
@@ -134,9 +103,9 @@ class Candidato extends Model
         'Data_Nasc_F3' => 'date:Y-m-d',
         'Data_Nasc_F4' => 'date:Y-m-d',
         'Data_Nasc_F5' => 'date:Y-m-d',
-        'R8' => 'date:Y-m-d',
-        'R11' => 'date:Y-m-d',
-        'R18' => 'date:Y-m-d',
+        'IPB_Data_Bat' => 'date:Y-m-d',
+        'IPB_Data_Prof_Fe' => 'date:Y-m-d',
+        'OIE_Data_Bat' => 'date:Y-m-d',
     ];
 
     public function setAttribute($key, $value)
@@ -190,5 +159,20 @@ class Candidato extends Model
     public function procedencia()
     {
         return $this->belongsTo(ProcedenciaReligiosa::class, 'Proced_Relig_ID');
+    }
+
+    public function respostas()
+    {
+        return $this->hasMany(CandidatoRespostaQuestionario::class, 'Candidato_ID');
+    }
+
+    public function sociedades()
+    {
+        return $this->hasMany(SociedadeInternaCandidato::class, 'Candidato_ID');
+    }
+
+    public function departamentos()
+    {
+        return $this->hasMany(DepartRespSocialCandidato::class, 'Candidato_ID');
     }
 }

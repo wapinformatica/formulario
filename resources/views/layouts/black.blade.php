@@ -11,13 +11,15 @@
     <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/jstree/style.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     @livewireStyles
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
- 
- 
+
+
         <main class="py-0">
             @yield('content')
         </main>
@@ -25,6 +27,7 @@
     </div>
     <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('dist/js/adminlte.js')}}"></script>
     <script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
     <script src="{{asset('dist/js/pages/dashboard3.js')}}"></script>
@@ -34,5 +37,7 @@
 
     @stack('scripts')
     @livewireScripts
+    <script src="{{ asset('vendor/pharaonic/pharaonic.select2.min.js') }}"></script>
+
 </body>
 </html>
