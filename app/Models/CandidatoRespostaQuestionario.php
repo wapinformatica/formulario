@@ -9,10 +9,10 @@ class CandidatoRespostaQuestionario extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $primaryKey = 'Resposta_ID';
+    protected $primaryKey = 'Candidatos_Resposta_ID';
     protected $fillable =
     [
-        'Resposta_ID',
+        'Candidatos_Resposta_ID',
         'Resposta',
         'Pergunta_ID',
         'Candidato_ID',

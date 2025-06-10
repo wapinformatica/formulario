@@ -55,6 +55,21 @@
 
                             <div class="col-lg-12">
                                 <div class="form-group">
+                                    <label>Escolha a Igreja da qual deseja ser membro: </label>
+                                    <select wire:model.defer="data.Igreja_ID" class="form-control" required>
+                                        <option value="">Selecione...</option>
+                                        @foreach ( $igrejas as $igreja )
+                                            <option value="{{ $igreja->Igreja_ID }}"> {{ $igreja->Igreja_Nome }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error("data.P_41")
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
                                     <label for="Nome_Candidato" class="form-label">Nome do Candidato <span class="text-danger">*</span></label>
                                     <input wire:model.defer="data.Nome_Candidato" class="form-control" type="text" placeholder="" maxlength="50" required autofocus autocomplete="off">
                                     @error("data.Nome_Candidato")
@@ -90,7 +105,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#1" wire:model="Naturalidade_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -107,7 +122,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#8" wire:model="Cidade_Origem_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -214,7 +229,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#2" wire:model="Cidade_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -324,7 +339,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#3" wire:model="Naturalidade_Conj_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -414,7 +429,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#4" wire:model="Naturalidade_F1_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -479,7 +494,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#5" wire:model="Naturalidade_F2_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -544,7 +559,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#6" wire:model="Naturalidade_F3_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -609,7 +624,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#7" wire:model="Naturalidade_F4_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -674,7 +689,7 @@
                                         <select data-pharaonic="select2" data-placeholder="Informe o nome" data-component-id="#7" wire:model="Naturalidade_F5_ID">
                                             <option value=""></option>
                                             @foreach ($cidades as $cidade)
-                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} </option>
+                                                <option value="{{$cidade->Cidade_ID}}">{{$cidade->Cidade_Nome}} / {{$cidade->UF}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -710,7 +725,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="Foto" class="form-label">Foto (Tirar uma Selfie) <span class="text-danger">*</span></label>
-                                    <input wire:model.defer="data.Foto" class="form-control" type="file" accept="image/*" required>
+                                    <input wire:model.defer="data.Foto" class="form-control" type="file" accept="image/*" capture="user" required>
                                     @error("data.Foto")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -734,7 +749,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Há quanto tempo frequenta a IPC? <span class="text-danger">*</span></label>
-                                    <input wire:model.defer="data.R2" class="form-control" type="text" placeholder="" maxlength="8" required autofocus autocomplete="off">
+                                    <input wire:model.defer="data.R2" class="form-control" type="text" placeholder="" required autofocus autocomplete="off">
                                     @error("data.R2")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -912,26 +927,6 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Se exerceu alguma Função ou Cargo na Igreja, relacione quais: </label>
-                                    <input wire:model.defer="data.Se_Sim_Quais" class="form-control" type="text" placeholder="" maxlength="100" autofocus autocomplete="off">
-                                    @error("data.Se_Sim_Quais")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Se exerceu alguma Função ou Cargo na Igreja, relacione quais: </label>
-                                    <input wire:model.defer="data.Se_Sim_Quais" class="form-control" type="text" placeholder="" maxlength="100" autofocus autocomplete="off">
-                                    @error("data.Se_Sim_Quais")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
 
                             @foreach($perguntas as $pergunta)
                                 <div class="col-lg-6">
@@ -970,8 +965,8 @@
 
 						    <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>I - Sociedades Internas & Ministérios <span class="text-danger">*</span></label>
-                                    <div class="grid grid-cols-2 gap-2">
+                                    <label>I - Sociedades Internas & Ministérios - Indique os de seu interesse <span class="text-danger">*</span></label>
+                                    <div class="grid grid-cols-1 gap-2">
                                         @foreach($sociedades as $sociedade)
                                             <label class="flex items-center space-x-2">
                                                 <input type="checkbox"
@@ -989,8 +984,8 @@
 
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>II - Departamento de Responsabilidade Social <span class="text-danger">*</span></label>
-                                    <div class="grid grid-cols-2 gap-2">
+                                    <label>II - Departamento de Responsabilidade Social - Indique os de seu interesse <span class="text-danger">*</span></label>
+                                    <div class="grid grid-cols-1 gap-2">
                                         @foreach($departamentos as $departamento)
                                             <label class="flex items-center space-x-2">
                                                 <input type="checkbox"

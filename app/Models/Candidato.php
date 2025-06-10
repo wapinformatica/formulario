@@ -64,6 +64,7 @@ class Candidato extends Model
         'P_52',
         'Data_Nasc_F5',
         'Naturalidade_F5_ID',
+        'Exercicio_ID',
         'Sexo',
         'Certidao_Casamento',
         'Foto',
@@ -79,6 +80,7 @@ class Candidato extends Model
         'OIE_Data_Bat',
         'OIE_Pr_Bat',
         'Exerc_F_Ig',
+        'Igreja_ID',
         'Se_Sim_Quais',
     ];
 
@@ -121,8 +123,31 @@ class Candidato extends Model
             'Profissao_Conj_ID'
         ];
 
+        $capitalizeFields = [
+            'Nome_Candidato',
+            'Nome_Mae',
+            'Nome_Pai',
+            'Logradouro',
+            'Complemento',
+            'Bairro',
+            'Nome_Conj',
+            'Nome_F1',
+            'Nome_F2',
+            'Nome_F3',
+            'Nome_F4',
+            'Nome_F5',
+            'IPB_Ig_Bat',
+            'IPB_Pr_Bat',
+            'IPB_Ig_Prf_Fe',
+            'IPB_Pr_Prof_Fe',
+            'OIE_Pr_Bat',
+            'Se_Sim_Quais',
+        ];
+
         if (in_array($key, $integerFields) && $value === '') {
             $value = null;
+        } elseif (in_array($key, $capitalizeFields) && is_string($value)) {
+            $value = ucwords(strtolower($value));
         }
 
         return parent::setAttribute($key, $value);

@@ -9,6 +9,8 @@ use App\Models\Cidade;
 use App\Models\DepartRespSocial;
 use App\Models\DepartRespSocialCandidato;
 use App\Models\EstadoCivil;
+use App\Models\Exercicio;
+use App\Models\Igreja;
 use Livewire\Component;
 use App\Models\ProcedenciaReligiosa;
 use App\Models\Profissao;
@@ -102,6 +104,8 @@ class CandidateForm extends Component
         'Exerc_F_Ig' => '',
         'Se_Sim_Quais' => '',
         'OIE_Membro' => '',
+        'Exercicio_ID' => '',
+        'Igreja_ID' => '',
     ];
 
     public $cidades = [];
@@ -120,10 +124,13 @@ class CandidateForm extends Component
 
     public $respostas = [];
 
+    public $igrejas = [];
+
     public function render()
     {
-
+        $this->cidades = Cidade::whereNotNull('Cidade_ID')->get();
         $this->profissoes = Profissao::whereNotNull('Profissao_ID')->get();
+        $this->igrejas = Igreja::whereNotNull('Igreja_ID')->where('Ativo', 'S')->get();
         $this->estadoCivils = EstadoCivil::whereNotNull('Estado_Civil_ID')->get();
         $this->procedencias = ProcedenciaReligiosa::whereNotNull('Proced_Relig_ID')->get();
         $this->sociedades = SociedadeInterna::whereNotNull('Sociedade_Interna_ID')->get();
@@ -136,8 +143,8 @@ class CandidateForm extends Component
 
     public function mount()
     {
-                $this->cidades = Cidade::whereNotNull('Cidade_ID')->get();
         $this->data['Data_Cadastro'] = date('Y-m-d');
+        $this->data['Exercicio_ID'] = Exercicio::where('Ano', date('Y'))->first()->Exercicio_ID;
     }
 
     protected function rules()
@@ -153,7 +160,8 @@ class CandidateForm extends Component
             'data.Orgao_Exp' => 'required|string|max:10',
             'data.e_mail' => 'required|email|max:50',
             'data.Logradouro' => 'required|string|max:255',
-            'data.Numero' => 'required|numeric',
+            'data.Numero' => 'required',
+            'data.Igreja_ID' => 'required|numeric',
             'data.Complemento' => 'nullable|string|max:255',
             'data.Bairro' => 'required|string|max:255',
             'data.CEP' => 'required|string|max:9',
@@ -195,8 +203,8 @@ class CandidateForm extends Component
             'data.Naturalidade_F5_ID' => 'nullable|exists:cidades,Cidade_ID',
             'data.Sexo' => 'required|in:M,F',
             'data.URL_Certidao_Casamento' => 'nullable|string',
-            'data.Certidao_Casamento' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'data.Foto' => 'required|file|image|max:2048',
+            'data.Certidao_Casamento' => 'nullable|file|mimes:pdf,jpg,png|max:10240',
+            'data.Foto' => 'required|file|image|max:10240',
             'data.Proced_Relig_ID' => 'required|exists:procedencia_religiosa,Proced_Relig_ID',
             'data.IPB_Membro' => 'nullable|in:Sim,Não',
             'data.IPB_Ig_Bat' => 'nullable|string|max:50',
@@ -286,7 +294,7 @@ class CandidateForm extends Component
                 CandidatoRespostaQuestionario::create([
                     'Candidato_ID' => $candidato->Candidato_ID,
                     'Pergunta_ID' => $respostaId,
-                    'Resposta' => $resposta,
+                    'Resposta' => ucwords(strtolower($resposta)),
                 ]);
             }
 
