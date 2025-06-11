@@ -66,7 +66,7 @@
                                                         <a class="btn btn-danger btn-sm"  wire:click="delete({{$user->id}})" title="Excluir">
                                                             <i class="fas fa-trash"></i>
                                                         </a>
-                                                    @endcan  
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -91,6 +91,7 @@
 			</div>
       	</div>
 	</section>
+    @include('livewire.administrativo.usuario.modal.create_pessoa')
     @include('livewire.administrativo.usuario.modal.create')
     @include('livewire.administrativo.usuario.modal.delete')
     @include('includes._messages')

@@ -53,6 +53,7 @@ class User extends Authenticatable
                         ->select([
                             'users.*'
                         ])
+                        ->where('id', '!=', 1) // Exclude the default admin user
                         ->where( function ($query) use ($search) {
                             $query->where('users.name', 'like', "%{$search}%")
                                   ->orWhere('users.email', 'like', "%{$search}%");

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Administrativo\Usuario;
 
 use App\Models\ModelHasRole;
+use App\Models\Pessoa;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Livewire\Component;
@@ -24,20 +25,28 @@ class Index extends Component
     public $sortAsc = true;
     public $selected = [];
     public $showModalCreateUpdate = false;
+    public $showModalCreatePessoa = false;
     public $showModalDelete = false;
     public $user_id;
     public $message;
     public $roles;
+    public $pessoas;
     public $data = [
         'name' => '',
         'email' => '',
         'password' => '',
         'role_id' => '',
         'password_confirmation' => '',
+        'Pes_ID' => '',
     ];
 
     public function render()
     {
+        if($this->data['Pes_ID'] != ''){
+            $pessoa = Pessoa::find($this->data['Pes_ID']);
+            $this->data['name'] = $pessoa->Nome;
+            $this->data['email'] = $pessoa->e_mail;
+        }
         return view('livewire.administrativo.usuario.index',[
             'users' => User::queryFilter($this->search, $this->perPage)
         ]);
@@ -46,6 +55,7 @@ class Index extends Component
     public function mount()
     {
         $this->roles = Role::all();
+        $this->pessoas = Pessoa::all();
     }
 
     public function storeUpdate()
@@ -75,7 +85,7 @@ class Index extends Component
         $this->data['password'] = '';
         $this->data['password_confirmation'] = '';
         $this->data['role_id'] = '';
-        $this->showModalCreateUpdate = true;
+        $this->showModalCreatePessoa = true;
     }
 
     public function store()
@@ -84,9 +94,10 @@ class Index extends Component
             return session()->flash('danger', $this->message);
         }
         $role = Role::find($this->data['role_id']);
+        $pessoa = Pessoa::where('Pes_ID', $this->data['Pes_ID'])->first();
         $user = User::create([
-            'name' => $this->data['name'],
-            'email' => $this->data['email'],
+            'name' => $pessoa->Nome,
+            'email' => $pessoa->e_mail,
             'password' => Hash::make($this->data['password']),
             'role_id' => $this->data['role_id']
         ]);
