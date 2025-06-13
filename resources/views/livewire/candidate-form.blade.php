@@ -332,7 +332,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Naturalidade Cônjuge </label>
                                     <div wire:ignore>
@@ -349,7 +349,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Profissão Cônjuge </label>
                                     <select wire:model.defer="data.Profissao_Conj_ID" class="form-control">
@@ -364,11 +364,21 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="Data_Casamento" class="form-label">Data de Casamento </label>
                                     <input wire:model.defer="data.Data_Casamento" class="form-control" type="date" placeholder="" autofocus autocomplete="off">
                                     @error("data.Data_Casamento")
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Se tem filhos, quantos são Menores de idade e Moram com você? </label>
+                                    <input wire:model.defer="data.R3" class="form-control" type="text" placeholder="" maxlength="1" autofocus autocomplete="off">
+                                    @error("data.R3")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -699,28 +709,25 @@
                                 </div>
                             </div>
 
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Link Certidao Casamento </label>
-                                            <input wire:model.defer="data.URL_Certidao_Casamento" class="form-control" type="text" placeholder="" autofocus autocomplete="off">
-                                            @error("data.URL_Certidao_Casamento")
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Link Certidao Casamento </label>
+                                    <input wire:model.defer="data.URL_Certidao_Casamento" class="form-control" type="text" placeholder="" autofocus autocomplete="off">
+                                    @error("data.URL_Certidao_Casamento")
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
 
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="Certidao_Casamento" class="form-label">Cópia da Certidão de Casamento</label>
-                                            <input wire:model.defer="data.Certidao_Casamento" class="form-control" type="file">
-                                            @error("data.Certidao_Casamento")
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-
-
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="Certidao_Casamento" class="form-label">Cópia da Certidão de Casamento</label>
+                                    <input wire:model.defer="data.Certidao_Casamento" class="form-control" type="file">
+                                    @error("data.Certidao_Casamento")
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -751,30 +758,6 @@
                                     <label>Há quanto tempo frequenta a IPC? <span class="text-danger">*</span></label>
                                     <input wire:model.defer="data.R2" class="form-control" type="text" placeholder="" required autofocus autocomplete="off">
                                     @error("data.R2")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Se tem filhos, quantos são Menores de idade e Moram com você? </label>
-                                    <input wire:model.defer="data.R3" class="form-control" type="text" placeholder="" maxlength="1" autofocus autocomplete="off">
-                                    @error("data.R3")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Estes filhos Menores de idade serão recebidos na IPC com você? </label>
-                                    <select wire:model.defer="data.R4" class="form-control">
-                                        <option value="">Selecione...</option>
-                                        <option value="Sim">Sim</option>
-                                        <option value="Não">Não</option>
-                                    </select>
-                                    @error("data.R4")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -965,7 +948,7 @@
 
 						    <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>I - Sociedades Internas & Ministérios - Indique os de seu interesse <span class="text-danger">*</span></label>
+                                    <label>I - Sociedades Internas & Ministérios - Indique os de seu interesse </label>
                                     <div class="grid grid-cols-1 gap-2">
                                         @foreach($sociedades as $sociedade)
                                             <label class="flex items-center space-x-2">
@@ -984,7 +967,7 @@
 
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>II - Departamento de Responsabilidade Social - Indique os de seu interesse <span class="text-danger">*</span></label>
+                                    <label>II - Departamento de Responsabilidade Social - Indique os de seu interesse </label>
                                     <div class="grid grid-cols-1 gap-2">
                                         @foreach($departamentos as $departamento)
                                             <label class="flex items-center space-x-2">
