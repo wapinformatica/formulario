@@ -373,12 +373,24 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Se casado(a), seu cônjuge frequenta a Igreja (IPC) com você? </label>
+                                    <select wire:model.defer="data.P_1" class="form-control">
+                                        <option value="">Selecione...</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                    @error("data.P_1")
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Se tem filhos, quantos são Menores de idade e Moram com você? </label>
-                                    <input wire:model.defer="data.R3" class="form-control" type="text" placeholder="" maxlength="1" autofocus autocomplete="off">
-                                    @error("data.R3")
+                                    <input wire:model.defer="data.P_3" class="form-control" type="text" placeholder="" maxlength="1" autofocus autocomplete="off">
+                                    @error("data.P_3")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -741,23 +753,9 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Se casado(a), seu cônjuge frequenta a Igreja (IPC) com você? </label>
-                                    <select wire:model.defer="data.R1" class="form-control">
-                                        <option value="">Selecione...</option>
-                                        <option value="Sim">Sim</option>
-                                        <option value="Não">Não</option>
-                                    </select>
-                                    @error("data.R1")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
                                     <label>Há quanto tempo frequenta a IPC? <span class="text-danger">*</span></label>
-                                    <input wire:model.defer="data.R2" class="form-control" type="text" placeholder="" required autofocus autocomplete="off">
-                                    @error("data.R2")
+                                    <input wire:model.defer="data.P_2" class="form-control" type="text" placeholder="" required autofocus autocomplete="off">
+                                    @error("data.P_2")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -946,39 +944,35 @@
                                 </div>
                             @endforeach
 
-						    <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>I - Sociedades Internas & Ministérios - Indique os de seu interesse </label>
-                                    <div class="grid grid-cols-1 gap-2">
-                                        @foreach($sociedades as $sociedade)
-                                            <label class="flex items-center space-x-2">
-                                                <input type="checkbox"
-                                                    wire:model="dataR43"
-                                                    value="{{ $sociedade->Sociedade_Interna_ID }}">
-                                                <span>{{ $sociedade->Sociedade_Interna_Nome }}</span>
-                                            </label>
-                                        @endforeach
+                                    <div wire:ignore>
+                                        <select data-pharaonic="select2" data-placeholder="Informe a Sociedade" data-component-id="#3" wire:model="Sociedade_Interna_ID">
+                                            <option value=""></option>
+                                            @foreach ($sociedades as $sociedade)
+                                                <option value="{{$sociedade->Sociedade_Interna_ID}}">{{$sociedade->Sociedade_Interna_Nome}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    @error("dataR43")
+                                    @error("Sociedade_Interna_ID")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>II - Departamento de Responsabilidade Social - Indique os de seu interesse </label>
-                                    <div class="grid grid-cols-1 gap-2">
-                                        @foreach($departamentos as $departamento)
-                                            <label class="flex items-center space-x-2">
-                                                <input type="checkbox"
-                                                    wire:model="dataR44"
-                                                    value="{{ $departamento->Depart_Resp_Social_ID }}">
-                                                <span>{{ $departamento->Depart_Resp_Social_Nome }}</span>
-                                            </label>
-                                        @endforeach
+                                    <div wire:ignore>
+                                        <select data-pharaonic="select2" data-placeholder="Informe a Sociedade" data-component-id="#3" wire:model="Depart_Resp_Social_ID">
+                                            <option value=""></option>
+                                            @foreach ($departamentos as $departamento)
+                                                <option value="{{$departamento->Depart_Resp_Social_ID}}">{{$departamento->Depart_Resp_Social_Nome}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    @error("dataR44")
+                                    @error("Depart_Resp_Social_ID")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -1071,13 +1065,13 @@
         });
     });
     $(document).ready(function () {
-        $('select[wire\\:model="dataR43"]').on('change', function (e) {
-            @this.set('dataR43', e.target.value);
+        $('select[wire\\:model="Sociedade_Interna_ID"]').on('change', function (e) {
+            @this.set('Sociedade_Interna_ID', e.target.value);
         });
     });
     $(document).ready(function () {
-        $('select[wire\\:model="dataR44"]').on('change', function (e) {
-            @this.set('dataR44', e.target.value);
+        $('select[wire\\:model="Depart_Resp_Social_ID"]').on('change', function (e) {
+            @this.set('Depart_Resp_Social_ID', e.target.value);
         });
     });
 </script>

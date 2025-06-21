@@ -40,6 +40,9 @@ class Candidato extends Model
         'Data_Casamento',
         'Nome_F1',
         'P_11',
+        'P_1',
+        'P_2',
+        'P_3',
         'P_12',
         'Data_Nasc_F1',
         'Naturalidade_F1_ID',
@@ -82,6 +85,8 @@ class Candidato extends Model
         'Exerc_F_Ig',
         'Igreja_ID',
         'Se_Sim_Quais',
+        'Sociedade_Interna_ID',
+        'Depart_Resp_Social_ID',
     ];
 
     protected $table = 'candidatos';
@@ -95,6 +100,8 @@ class Candidato extends Model
         'Naturalidade_F4_ID' => 'integer',
         'Naturalidade_F5_ID' => 'integer',
         'Profissao_Conj_ID' => 'integer',
+        'Sociedade_Interna_ID' => 'integer',
+        'Depart_Resp_Social_ID' => 'integer',
 
         // Campos de data
         'Data_Nascimento' => 'date:Y-m-d',
@@ -199,5 +206,15 @@ class Candidato extends Model
     public function departamentos()
     {
         return $this->hasMany(DepartRespSocialCandidato::class, 'Candidato_ID');
+    }
+
+    public function sociedadeInterna()
+    {
+        return $this->belongsTo(SociedadeInterna::class, 'Sociedade_Interna_ID');
+    }
+
+    public function departamento()
+    {
+        return $this->belongsTo(DepartRespSocial::class, 'Depart_Resp_Social_ID');
     }
 }

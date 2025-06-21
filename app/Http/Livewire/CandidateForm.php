@@ -34,6 +34,8 @@ class CandidateForm extends Component
     public $Naturalidade_F4_ID;
     public $Naturalidade_F5_ID;
     public $Naturalidade_ID;
+    public $Sociedade_Interna_ID;
+    public $Depart_Resp_Social_ID;
     public $dataR43 = [];
     public $dataR44 = [];
 
@@ -70,6 +72,9 @@ class CandidateForm extends Component
         'URL_Certidao_Casamento' => '',
         'Nome_F1' => '',
         'P_11' => '',
+        'P_1' => '',
+        'P_2' => '',
+        'P_3' => '',
         'P_12' => '',
         'Data_Nasc_F1' => NULL,
         'Nome_F2' => '',
@@ -106,6 +111,8 @@ class CandidateForm extends Component
         'OIE_Membro' => '',
         'Exercicio_ID' => '',
         'Igreja_ID' => '',
+        'Sociedade_Interna_ID' => NULL,
+        'Depart_Resp_Social_ID' => NULL,
     ];
 
     public $cidades = [];
@@ -216,8 +223,6 @@ class CandidateForm extends Component
             'data.OIE_Data_Bat' => 'nullable|date',
             'data.OIE_Pr_Bat' => 'nullable|string|max:50',
             'data.Se_Sim_Quais' => 'nullable|string|max:100',
-            'dataR43' => 'required',
-            'dataR44' => 'required',
         ];
     }
 
@@ -235,8 +240,6 @@ class CandidateForm extends Component
             'image' => 'O campo :attribute deve ser uma imagem.',
             'mimes' => 'O campo :attribute deve ser um arquivo do tipo: :values.',
             'data.Foto.required' => 'A foto é obrigatória.',
-            'dataR43.required' => 'O campo Sociedades Internas & Ministérios é obrigatório.',
-            'dataR44.required' => 'O campo Departamento de Responsabilidade Social é obrigatório.',
         ];
     }
 
@@ -251,6 +254,8 @@ class CandidateForm extends Component
         $this->data['Naturalidade_F4_ID'] = $this->Naturalidade_F4_ID;
         $this->data['Naturalidade_F5_ID'] = $this->Naturalidade_F5_ID;
         $this->data['Naturalidade_ID'] = $this->Naturalidade_ID;
+        $this->data['Sociedade_Interna_ID'] = $this->Sociedade_Interna_ID;
+        $this->data['Depart_Resp_Social_ID'] = $this->Depart_Resp_Social_ID;
 
         $this->cleanEmptyIntegerFields();
 

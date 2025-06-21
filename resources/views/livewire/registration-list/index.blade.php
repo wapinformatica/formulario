@@ -244,7 +244,10 @@
                                     <p><strong>Data de Casamento:</strong> {{ $selectedResponse->Data_Casamento ? \Carbon\Carbon::parse($selectedResponse->Data_Casamento)->format('d/m/Y') : 'Não informado' }}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p><strong>Frequenta a IPC:</strong> {{ $selectedResponse->R4 ?? 'Não informado' }}</p>
+                                    <p><strong>Se casado(a), seu cônjuge frequenta a Igreja (IPC) com você?:</strong> {{ $selectedResponse->P_1 ?? 'Não informado' }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Se tem filhos, quantos são Menores de idade e Moram com você?:</strong> {{ $selectedResponse->P_3 ?? 'Não informado' }}</p>
                                 </div>
                                 @endif
 
@@ -309,6 +312,10 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td width="40%">Há quanto tempo frequenta a IPC?:</td>
+                                                <td>{{ $selectedResponse->P_2 ?? 'Não informado' }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td width="40%">Última Procedência Religiosa (Denominação):</td>
                                                 <td>{{ $selectedResponse->procedencia->Proced_Relig_Nome ?? 'Não informado' }}</td>
                                             </tr>
@@ -371,17 +378,13 @@
                                             <tr>
                                                 <td width="40%">I - Sociedades Internas & Ministérios</td>
                                                 <td>
-                                                    @foreach($selectedResponse->sociedades as $sociedade)
-                                                    {{ $sociedade->sociedadeInterna->Sociedade_Interna_Nome . ', ' ?? 'Não informado' }}
-                                                    @endforeach
+                                                    {{ $selectedResponse->sociedadeInterna->Sociedade_Interna_Nome ?? 'Não informado' }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td width="40%">II - Departamento de Responsabilidade Social</td>
                                                 <td>
-                                                    @foreach($selectedResponse->departamentos as $departamento)
-                                                        {{ $departamento->departamento->Depart_Resp_Social_Nome . ', ' ?? 'Não informado' }}
-                                                    @endforeach
+                                                    {{ $selectedResponse->departamento->Depart_Resp_Social_Nome ?? 'Não informado' }}
                                                 </td>
                                             </tr>
                                         </tbody>
